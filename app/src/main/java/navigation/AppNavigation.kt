@@ -1,34 +1,40 @@
 package com.wideias.sociotorcedor.navigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.wideias.sociotorcedor.ui.login.LoginScreen
+import com.wideias.sociotorcedor.ui.home.HomeScreen
 
 sealed class Tela(val rota: String) {
-    object Login : Tela("login")
     object Home : Tela("home")
+    object Lanchonete : Tela("lanchonete")
+    object Credito : Tela("credito")
+    object Ingresso : Tela("ingresso")
 }
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Tela.Login.rota) {
-        composable(Tela.Login.rota) {
-            LoginScreen(
-                onLoginSucesso = {
-                    navController.navigate(Tela.Home.rota) {
-                        popUpTo(Tela.Login.rota) { inclusive = true }
-                    }
-                },
-                onCadastroClick = { }
-            )
-        }
+    NavHost(
+        navController = navController,
+        startDestination = Tela.Home.rota
+    ) {
         composable(Tela.Home.rota) {
-            Text("Home - Em construção 🚧")
+            HomeScreen(navController = navController)
+        }
+
+        composable(Tela.Lanchonete.rota) {
+            // LanchoneteScreen() - implementar depois
+        }
+
+        composable(Tela.Credito.rota) {
+            // CreditoScreen() - implementar depois
+        }
+
+        composable(Tela.Ingresso.rota) {
+            // IngressoScreen() - implementar depois
         }
     }
 }

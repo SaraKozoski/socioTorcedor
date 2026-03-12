@@ -2,33 +2,35 @@ package com.wideias.sociotorcedor.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.wideias.sociotorcedor.R
 
-// Set of Material typography styles to start with
+val BebasNeue = FontFamily(
+    Font(R.font.bebas_neue, FontWeight.Normal)
+)
+
 val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+    headlineLarge = TextStyle(
+        fontFamily = BebasNeue,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
+        fontSize = 28.sp
     ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+    headlineMedium = TextStyle(
+        fontFamily = BebasNeue,
+        fontWeight = FontWeight.Normal,
+        fontSize = 24.sp
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = BebasNeue,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
+    ),
+    labelLarge = TextStyle(
+        fontFamily = BebasNeue,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
     )
-    */
 )

@@ -1,5 +1,7 @@
 package com.wideias.sociotorcedor.ui.login
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,20 +35,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.wideias.sociotorcedor.ui.theme.VermelhoFundoLogin
-import com.wideias.sociotorcedor.ui.theme.VermelhoBotao
-import androidx.compose.foundation.background
-import com.wideias.sociotorcedor.ui.theme.FundoEscuro
-import androidx.compose.foundation.Image
-import androidx.compose.ui.res.painterResource
 import com.wideias.sociotorcedor.R
-
+import com.wideias.sociotorcedor.ui.theme.BebasNeue
+import com.wideias.sociotorcedor.ui.theme.FundoEscuro
+import com.wideias.sociotorcedor.ui.theme.VermelhoBotao
+import com.wideias.sociotorcedor.ui.theme.VermelhoFundoLogin
 
 @Composable
 fun LoginScreen(
@@ -81,10 +82,12 @@ fun LoginScreen(
                 .size(120.dp)
                 .padding(bottom = 8.dp)
         )
+
         Text(
             text = "Sócio Torcedor",
             fontSize = 26.sp,
             fontWeight = FontWeight.Bold,
+            fontFamily = BebasNeue,
             color = Color.White,
             modifier = Modifier.padding(bottom = 4.dp)
         )
@@ -92,6 +95,7 @@ fun LoginScreen(
         Text(
             text = "Bem-vindo de volta!",
             fontSize = 14.sp,
+            fontFamily = BebasNeue,
             color = Color.White,
             modifier = Modifier.padding(bottom = 32.dp)
         )
@@ -99,8 +103,9 @@ fun LoginScreen(
         OutlinedTextField(
             value = cpf,
             onValueChange = { if (it.length <= 11) cpf = it.filter { c -> c.isDigit() } },
-            label = { Text("CPF", color = Color.Black) },
-            placeholder = { Text("123.123.123.12", color = Color.Black) },
+            label = { Text("CPF", fontFamily = BebasNeue) },
+            placeholder = { Text("123.123.123.12", fontFamily = BebasNeue) },
+            textStyle = TextStyle(fontFamily = BebasNeue, color = Color.Black),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true,
             shape = RoundedCornerShape(25.dp),
@@ -110,16 +115,19 @@ fun LoginScreen(
                 focusedTextColor = Color.Black,
                 unfocusedTextColor = Color.Black,
                 focusedBorderColor = Color.Black,
-                unfocusedBorderColor = Color.Black
+                unfocusedBorderColor = Color.Black,
+                focusedLabelColor = Color.White,
+                unfocusedLabelColor = Color.Black,
+                cursorColor = Color.Black
             ),
             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
-
         )
 
         OutlinedTextField(
             value = senha,
             onValueChange = { senha = it },
-            label = { Text("Senha", color = Color.Black) },
+            label = { Text("Senha", fontFamily = BebasNeue) },
+            textStyle = TextStyle(fontFamily = BebasNeue, color = Color.Black),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             singleLine = true,
@@ -130,7 +138,10 @@ fun LoginScreen(
                 focusedTextColor = Color.Black,
                 unfocusedTextColor = Color.Black,
                 focusedBorderColor = Color.Black,
-                unfocusedBorderColor = Color.Black
+                unfocusedBorderColor = Color.Black,
+                focusedLabelColor = Color.White,
+                unfocusedLabelColor = Color.Black,
+                cursorColor = Color.Black
             ),
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
         )
@@ -140,6 +151,7 @@ fun LoginScreen(
                 text = (loginState as LoginState.Erro).mensagem,
                 color = MaterialTheme.colorScheme.error,
                 fontSize = 13.sp,
+                fontFamily = BebasNeue,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
@@ -161,7 +173,7 @@ fun LoginScreen(
                     modifier = Modifier.size(24.dp)
                 )
             } else {
-                Text("Entrar", fontSize = 16.sp, color = Color.Black)
+                Text("Entrar", fontSize = 16.sp, color = Color.Black, fontFamily = BebasNeue)
             }
         }
 
@@ -172,7 +184,7 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             HorizontalDivider(modifier = Modifier.weight(1f))
-            Text("  ou  ", color = Color.White)
+            Text("  ou  ", color = Color.White, fontFamily = BebasNeue)
             HorizontalDivider(modifier = Modifier.weight(1f))
         }
 
@@ -184,13 +196,13 @@ fun LoginScreen(
             shape = RoundedCornerShape(25.dp),
             modifier = Modifier.fillMaxWidth().height(50.dp)
         ) {
-            Text("Entrar com Google", fontSize = 16.sp, color = Color.White)
+            Text("Entrar com Google", fontSize = 16.sp, color = Color.White, fontFamily = BebasNeue)
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
         TextButton(onClick = onCadastroClick) {
-            Text("Não tem conta? Cadastre-se", color = Color.White)
+            Text("Não tem conta? Cadastre-se", color = Color.White, fontFamily = BebasNeue)
         }
     }
 }
