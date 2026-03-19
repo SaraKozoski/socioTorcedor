@@ -52,8 +52,8 @@ fun BottomNavigationBar(navController: NavController) {
             icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
             label = { Text("Home", fontFamily = BebasNeue) },
             colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = HomeColors.Vermelho,
-                selectedTextColor = HomeColors.Vermelho,
+                selectedIconColor = HomeColors.Cards1,
+                selectedTextColor = HomeColors.Cards1,
                 unselectedIconColor = HomeColors.TextoCinza,
                 unselectedTextColor = HomeColors.TextoCinza,
                 indicatorColor = Color.Transparent
@@ -66,8 +66,8 @@ fun BottomNavigationBar(navController: NavController) {
             icon = { Icon(Icons.Default.Restaurant, contentDescription = "Lanchonete") },
             label = { Text("Lanchonete", fontFamily = BebasNeue) },
             colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = HomeColors.Vermelho,
-                selectedTextColor = HomeColors.Vermelho,
+                selectedIconColor = HomeColors.Cards1,
+                selectedTextColor = HomeColors.Cards1,
                 unselectedIconColor = HomeColors.TextoCinza,
                 unselectedTextColor = HomeColors.TextoCinza,
                 indicatorColor = Color.Transparent
@@ -83,7 +83,7 @@ fun BottomNavigationBar(navController: NavController) {
                     modifier = Modifier
                         .size(48.dp)
                         .clip(CircleShape)
-                        .background(HomeColors.Vermelho),
+                        .background(HomeColors.Cards1),
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
@@ -105,8 +105,8 @@ fun BottomNavigationBar(navController: NavController) {
             icon = { Icon(Icons.Default.CreditCard, contentDescription = "Crédito") },
             label = { Text("Crédito", fontFamily = BebasNeue) },
             colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = HomeColors.Vermelho,
-                selectedTextColor = HomeColors.Vermelho,
+                selectedIconColor = HomeColors.Cards1,
+                selectedTextColor = HomeColors.Cards1,
                 unselectedIconColor = HomeColors.TextoCinza,
                 unselectedTextColor = HomeColors.TextoCinza,
                 indicatorColor = Color.Transparent
@@ -119,8 +119,8 @@ fun BottomNavigationBar(navController: NavController) {
             icon = { Icon(Icons.Default.ConfirmationNumber, contentDescription = "Ingresso") },
             label = { Text("Ingresso", fontFamily = BebasNeue) },
             colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = HomeColors.Vermelho,
-                selectedTextColor = HomeColors.Vermelho,
+                selectedIconColor = HomeColors.Cards1,
+                selectedTextColor = HomeColors.Cards1,
                 unselectedIconColor = HomeColors.TextoCinza,
                 unselectedTextColor = HomeColors.TextoCinza,
                 indicatorColor = Color.Transparent

@@ -1,42 +1,27 @@
 package com.wideias.sociotorcedor.ui.home
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.shape.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.draw.*
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.*
+import androidx.compose.ui.text.*
+import androidx.compose.ui.text.font.*
+import androidx.compose.ui.text.style.*
+import androidx.compose.ui.unit.*
 import com.wideias.sociotorcedor.R
 import com.wideias.sociotorcedor.ui.theme.BebasNeue
 import androidx.compose.foundation.layout.requiredSize
 import com.wideias.sociotorcedor.ui.home.HomeColors
 
 @Composable
-fun MembershipSection() {
+fun MembershipSection(navController: androidx.navigation.NavController) {
     Column {
         Text(
             text = "SEJA SÓCIO",
@@ -52,14 +37,14 @@ fun MembershipSection() {
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             items(planosMock) { plano ->
-                MembershipCard(plano = plano)
+                MembershipCard(plano = plano, navController = navController)
             }
         }
     }
 }
 
 @Composable
-fun MembershipCard(plano: Plano) {
+fun MembershipCard(plano: Plano, navController: androidx.navigation.NavController) {
     Box(
         modifier = Modifier
             .width(220.dp)
@@ -67,7 +52,6 @@ fun MembershipCard(plano: Plano) {
             .clip(RoundedCornerShape(20.dp))
             .background(plano.cor)
     ) {
-        // Logo ao fundo com transparência
         Image(
             painter = painterResource(id = R.drawable.logo_clube),
             contentDescription = null,
@@ -128,7 +112,7 @@ fun MembershipCard(plano: Plano) {
             Spacer(modifier = Modifier.weight(1f))
 
             Button(
-                onClick = { },
+                onClick = { navController.navigate("plano_detalhe/${plano.nome}") },
                 shape = RoundedCornerShape(50.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White
@@ -139,7 +123,7 @@ fun MembershipCard(plano: Plano) {
                     text = "Ver Benefícios",
                     fontSize = 14.sp,
                     fontFamily = BebasNeue,
-                    color = plano.cor.copy(alpha = 3f)  // ← usa a cor do plano atual
+                    color = plano.cor.copy(alpha = 3f) 
                 )
             }
         }

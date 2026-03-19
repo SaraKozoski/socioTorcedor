@@ -1,26 +1,23 @@
 package com.wideias.sociotorcedor.ui.home
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.*
+import androidx.navigation.NavController
 import com.wideias.sociotorcedor.R
+import com.wideias.sociotorcedor.ui.theme.BebasNeue
 
 @Composable
-fun HeaderSection() {
+fun HeaderSection(navController: NavController) {
+    var menuAberto by remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -29,12 +26,44 @@ fun HeaderSection() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        IconButton(onClick = { }) {
-            Icon(
-                imageVector = Icons.Default.Menu,
-                contentDescription = "Menu",
-                tint = HomeColors.TextoBranco
-            )
+        Box {
+            IconButton(onClick = { menuAberto = true }) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = "Menu",
+                    tint = HomeColors.TextoBranco
+                )
+            }
+
+            DropdownMenu(
+                expanded = menuAberto,
+                onDismissRequest = { menuAberto = false }
+            ) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = "Planos de Sócio",
+                            fontFamily = BebasNeue,
+                            fontSize = 16.sp
+                        )
+                    },
+                    onClick = {
+                        menuAberto = false
+                        navController.navigate("planos")
+                    }
+                )
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = "Testes",
+                            fontFamily = BebasNeue,
+                            fontSize = 16.sp,
+                            color = Color.Gray
+                        )
+                    },
+                    onClick = { menuAberto = false }
+                )
+            }
         }
 
         Image(
