@@ -26,10 +26,9 @@ fun PlanoDetalheScreen(tipoPlano: String, navController: NavController) {
     val plano = planosInfo.firstOrNull { it.tipo.name == tipoPlano } ?: planosInfo.first()
     val scrollState = rememberScrollState()
     var pullAcumulado by remember { mutableStateOf(0f) }
+    var voltando by remember { mutableStateOf(false) }
     val limiteParaVoltar = 120f
     val progressoPull = (pullAcumulado / limiteParaVoltar).coerceIn(0f, 1f)
-
-   var voltando by remember { mutableStateOf(false) }
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
@@ -50,13 +49,14 @@ fun PlanoDetalheScreen(tipoPlano: String, navController: NavController) {
                         pullAcumulado = 0f
                         navController.popBackStack()
                     }
-                } else if (available.y <= 0 && consumed.y != 0f) {
+                } else if (consumed.y != 0f) {
                     pullAcumulado = 0f
                 }
                 return Offset.Zero
             }
         }
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,7 +64,6 @@ fun PlanoDetalheScreen(tipoPlano: String, navController: NavController) {
             .nestedScroll(nestedScrollConnection)
             .verticalScroll(scrollState)
     ) {
-
         // ── Indicador pull down ───────────────────────────
         Box(
             modifier = Modifier
@@ -127,10 +126,7 @@ fun PlanoDetalheScreen(tipoPlano: String, navController: NavController) {
                         modifier = Modifier.requiredSize(120.dp).align(Alignment.Center),
                         alpha = 0.2f
                     )
-                    Column(
-                        modifier = Modifier.fillMaxSize().padding(8.dp),
-                        verticalArrangement = Arrangement.SpaceBetween
-                    ) {
+                    Column(modifier = Modifier.fillMaxSize().padding(8.dp), verticalArrangement = Arrangement.SpaceBetween) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Image(painter = painterResource(id = R.drawable.logo_clube), contentDescription = null, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(4.dp))

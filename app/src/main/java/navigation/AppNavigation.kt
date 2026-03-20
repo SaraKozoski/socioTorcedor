@@ -89,28 +89,30 @@ fun NavegacaoInterna(navController: NavController, modifier: Modifier) {
         composable(
             route = Tela.PlanoDetalhe.rota,
 
-            // ── Entra subindo de baixo ────────────────────
+            // Sobe imediatamente cobrindo o sheet
             enterTransition = {
                 slideInVertically(
                     initialOffsetY = { it },
-                    animationSpec = tween(380, easing = FastOutSlowInEasing)
-                ) + fadeIn(animationSpec = tween(200))
+                    animationSpec = tween(320, easing = FastOutSlowInEasing)
+                )
             },
 
-            // ── Tela de baixo não se move ─────────────────
+            // PlanosScreen fica parada enquanto detalhe sobe
             exitTransition = {
-                fadeOut(animationSpec = tween(1)) // quase invisível mas força recomposição
-            },
-            popEnterTransition = {
-                fadeIn(animationSpec = tween(1)) // aparece instantaneamente
+                fadeOut(animationSpec = tween(1))
             },
 
-            // ── Detalhe desce e some ──────────────────────
+            // PlanosScreen aparece instantaneamente ao voltar
+            popEnterTransition = {
+                fadeIn(animationSpec = tween(1))
+            },
+
+            // Detalhe desce ao voltar
             popExitTransition = {
                 slideOutVertically(
                     targetOffsetY = { it },
-                    animationSpec = tween(320, easing = FastOutSlowInEasing)
-                ) + fadeOut(animationSpec = tween(200))
+                    animationSpec = tween(300, easing = FastOutSlowInEasing)
+                )
             }
         ) { backStackEntry ->
             val tipoPlano = backStackEntry.arguments?.getString("tipoPlano") ?: "RED"

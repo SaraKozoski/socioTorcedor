@@ -20,7 +20,6 @@ import androidx.navigation.NavController
 import com.wideias.sociotorcedor.R
 import com.wideias.sociotorcedor.ui.home.HomeColors
 import com.wideias.sociotorcedor.ui.theme.BebasNeue
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,15 +31,14 @@ fun PlanosScreen(navController: NavController) {
     var mostrarSheet by remember { mutableStateOf(false) }
     val planoAtual = planosInfo.firstOrNull { it.tipo == planoSelecionado }
 
-    // ── Sheet totalmente expandido → tela preta → navega ──
+    // Sheet expandido → navega imediatamente sem delay
     LaunchedEffect(sheetState.currentValue) {
         if (sheetState.currentValue == SheetValue.Expanded && planoAtual != null) {
             val tipo = planoAtual.tipo.name
+            navController.navigate("plano_detalhe/$tipo")
             scope.launch {
                 sheetState.hide()
                 mostrarSheet = false
-                delay(50) // 0.05s tela preta
-                navController.navigate("plano_detalhe/$tipo")
             }
         }
     }
@@ -52,7 +50,6 @@ fun PlanosScreen(navController: NavController) {
         TipoPlano.NENHUM -> R.drawable.estadio_default
     }
 
-    // ── Bottom Sheet ──────────────────────────────────────
     if (mostrarSheet && planoAtual != null) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -89,12 +86,9 @@ fun PlanosScreen(navController: NavController) {
                 plano = planoAtual,
                 onAssinar = {
                     val tipo = planoAtual.tipo.name
-                    scope.launch {
-                        sheetState.hide()
-                        mostrarSheet = false
-                        delay(50)
-                        navController.navigate("plano_detalhe/$tipo")
-                    }
+                    scope.launch { sheetState.hide() }
+                    mostrarSheet = true
+                    navController.navigate("plano_detalhe/$tipo")
                 }
             )
         }
@@ -106,7 +100,6 @@ fun PlanosScreen(navController: NavController) {
             .background(HomeColors.Fundo)
             .verticalScroll(rememberScrollState())
     ) {
-        // Cards dos planos
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -136,7 +129,6 @@ fun PlanosScreen(navController: NavController) {
             }
         }
 
-        // Imagem do estádio
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -146,11 +138,7 @@ fun PlanosScreen(navController: NavController) {
                     if (planoSelecionado != TipoPlano.NENHUM) mostrarSheet = true
                 }
         ) {
-            Crossfade(
-                targetState = imagemEstadio,
-                animationSpec = tween(400),
-                label = "estadio"
-            ) { imagem ->
+            Crossfade(targetState = imagemEstadio, animationSpec = tween(400), label = "estadio") { imagem ->
                 Image(
                     painter = painterResource(id = imagem),
                     contentDescription = null,
@@ -167,31 +155,22 @@ fun PlanosScreen(navController: NavController) {
                         .background(Color.Black.copy(alpha = 0.6f))
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
-                    Text(
-                        text = "Toque em um plano para ver os setores",
-                        color = Color.White,
-                        fontFamily = BebasNeue,
-                        fontSize = 13.sp
-                    )
+                    Text(text = "Toque em um plano para ver os setores", color = Color.White, fontFamily = BebasNeue, fontSize = 13.sp)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Legenda
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             planosInfo.forEach { plano ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.clickable {
-                        planoSelecionado = if (planoSelecionado == plano.tipo)
-                            TipoPlano.NENHUM else plano.tipo
+                        planoSelecionado = if (planoSelecionado == plano.tipo) TipoPlano.NENHUM else plano.tipo
                         if (planoSelecionado == plano.tipo) mostrarSheet = true
                     }
                 ) {
@@ -200,11 +179,7 @@ fun PlanosScreen(navController: NavController) {
                             .size(36.dp)
                             .clip(CircleShape)
                             .background(plano.cor)
-                            .then(
-                                if (planoSelecionado == plano.tipo)
-                                    Modifier.border(2.dp, Color.White, CircleShape)
-                                else Modifier
-                            )
+                            .then(if (planoSelecionado == plano.tipo) Modifier.border(2.dp, Color.White, CircleShape) else Modifier)
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(text = plano.nome, color = Color.White, fontFamily = BebasNeue, fontSize = 14.sp)
@@ -220,16 +195,10 @@ fun PlanosScreen(navController: NavController) {
 @Composable
 fun PlanoBottomSheetContent(plano: PlanoInfo, onAssinar: () -> Unit) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .padding(bottom = 32.dp)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp).padding(bottom = 32.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 16.dp)) {
-            Box(
-                modifier = Modifier.size(48.dp).clip(CircleShape).background(plano.cor),
-                contentAlignment = Alignment.Center
-            ) {
+            Box(modifier = Modifier.size(48.dp).clip(CircleShape).background(plano.cor), contentAlignment = Alignment.Center) {
                 Image(painter = painterResource(id = R.drawable.logo_clube), contentDescription = null, modifier = Modifier.size(32.dp))
             }
             Spacer(modifier = Modifier.width(12.dp))
@@ -259,11 +228,7 @@ fun PlanoBottomSheetContent(plano: PlanoInfo, onAssinar: () -> Unit) {
         Spacer(modifier = Modifier.height(20.dp))
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
-                .background(plano.cor)
-                .padding(vertical = 16.dp),
+            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(plano.cor).padding(vertical = 16.dp),
             contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -296,23 +261,14 @@ fun CardPlanoCompacto(plano: PlanoInfo, selecionado: Boolean, scale: Float, onCl
             .then(if (selecionado) Modifier.border(2.dp, Color.White, RoundedCornerShape(16.dp)) else Modifier)
             .clickable { onClick() }
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.logo_clube),
-            contentDescription = null,
-            modifier = Modifier.requiredSize(120.dp).align(Alignment.Center),
-            alpha = 0.2f
-        )
+        Image(painter = painterResource(id = R.drawable.logo_clube), contentDescription = null, modifier = Modifier.requiredSize(120.dp).align(Alignment.Center), alpha = 0.2f)
         Column(modifier = Modifier.fillMaxSize().padding(8.dp), verticalArrangement = Arrangement.SpaceBetween) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(painter = painterResource(id = R.drawable.logo_clube), contentDescription = null, modifier = Modifier.size(16.dp))
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(text = plano.nome, color = Color.White, fontFamily = BebasNeue, fontSize = 12.sp, fontWeight = FontWeight.Bold)
             }
-            Image(
-                painter = painterResource(id = R.drawable.logo_clube),
-                contentDescription = null,
-                modifier = Modifier.size(60.dp).align(Alignment.CenterHorizontally)
-            )
+            Image(painter = painterResource(id = R.drawable.logo_clube), contentDescription = null, modifier = Modifier.size(60.dp).align(Alignment.CenterHorizontally))
         }
     }
 }
