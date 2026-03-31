@@ -16,6 +16,9 @@ import com.wideias.sociotorcedor.ui.home.HeaderSection
 import com.wideias.sociotorcedor.ui.home.HomeScreen
 import com.wideias.sociotorcedor.ui.planos.PlanoDetalheScreen
 import com.wideias.sociotorcedor.ui.planos.PlanosScreen
+import com.wideias.sociotorcedor.ui.time.TimeScreen
+import com.wideias.sociotorcedor.ui.time.JogadorDetalheScreen
+
 
 sealed class Tela(val rota: String) {
     object Home         : Tela("home")
@@ -26,6 +29,7 @@ sealed class Tela(val rota: String) {
     object PlanoDetalhe : Tela("plano_detalhe/{tipoPlano}") {
         fun comTipo(tipo: String) = "plano_detalhe/$tipo"
     }
+    object Time : Tela("time")
 }
 
 private val telasComNavegacao = listOf(
@@ -34,6 +38,7 @@ private val telasComNavegacao = listOf(
     Tela.Credito.rota,
     Tela.Ingresso.rota,
     Tela.Planos.rota,
+    Tela.Time.rota,
     "plano_detalhe"
 )
 
@@ -89,7 +94,6 @@ fun NavegacaoInterna(navController: NavController, modifier: Modifier) {
         composable(
             route = Tela.PlanoDetalhe.rota,
 
-            // Sobe imediatamente cobrindo o sheet
             enterTransition = {
                 slideInVertically(
                     initialOffsetY = { it },
@@ -97,17 +101,14 @@ fun NavegacaoInterna(navController: NavController, modifier: Modifier) {
                 )
             },
 
-            // PlanosScreen fica parada enquanto detalhe sobe
             exitTransition = {
                 fadeOut(animationSpec = tween(1))
             },
 
-            // PlanosScreen aparece instantaneamente ao voltar
             popEnterTransition = {
                 fadeIn(animationSpec = tween(1))
             },
 
-            // Detalhe desce ao voltar
             popExitTransition = {
                 slideOutVertically(
                     targetOffsetY = { it },
@@ -118,5 +119,13 @@ fun NavegacaoInterna(navController: NavController, modifier: Modifier) {
             val tipoPlano = backStackEntry.arguments?.getString("tipoPlano") ?: "RED"
             PlanoDetalheScreen(tipoPlano = tipoPlano, navController = navController)
         }
+
+        composable(Tela.Time.rota) {
+            TimeScreen(navController = navController)
+        }
+        composable("jogador/{atletaId}") { backStackEntry ->
+    val id = backStackEntry.arguments?.getString("atletaId")?.toInt() ?: 0
+    JogadorDetalheScreen(atletaId = id, navController = navController)
+}
     }
 }

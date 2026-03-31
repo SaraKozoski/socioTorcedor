@@ -37,6 +37,7 @@ kotlin {
 }
 
 dependencies {
+    implementation("io.coil-kt:coil-compose:2.6.0") 
     implementation("androidx.compose.material:material-icons-extended:1.6.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

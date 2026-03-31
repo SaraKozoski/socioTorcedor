@@ -74,22 +74,21 @@ fun BottomNavigationBar(navController: NavController) {
             )
         )
 
-        // Logo central
         NavigationBarItem(
             selected = false,
-            onClick = { },
+            onClick = { navController.navigate("time") },            
             icon = {
                 Box(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(CircleShape)
-                        .background(HomeColors.Cards1),
+                        .background(HomeColors.FundoCards1),
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.logo_clube),
                         contentDescription = "Logo",
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(45.dp)
                     )
                 }
             },
