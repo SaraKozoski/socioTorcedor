@@ -152,8 +152,6 @@ fun CardPartidaAoVivo(partida: ApiPartida) {
     }
 }
 
-// ── Card FUTURO ───────────────────────────────────────────
-@Composable
 fun CardPartidaFutura(partida: ApiPartida) {
     Box(
         modifier = Modifier
@@ -192,7 +190,6 @@ fun CardPartidaFutura(partida: ApiPartida) {
     }
 }
 
-// ── Card PASSADO ──────────────────────────────────────────
 @Composable
 fun CardPartidaPassada(partida: ApiPartida) {
     Box(
@@ -235,7 +232,7 @@ fun CardPartidaPassada(partida: ApiPartida) {
     }
 }
 
-// ── Escudo ────────────────────────────────────────────────
+
 @Composable
 fun EscudoPartida(timeId: Int, escudoUrl: String, sigla: String) {
     Box(

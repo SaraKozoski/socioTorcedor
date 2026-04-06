@@ -116,8 +116,12 @@ private fun RawSquadPlayer.toApiJogador(): ApiJogador {
         altura           = 1.80,
         peso             = null,
         pe               = "direito",
-        historia         = null
-    )
+        historia         = " ${name ?: "desconecido"} cresceu nas ruas de Ubatuba, onde a bola nunca desgrudava do pé e o sonho de ser jogador parecia 
+                            grande demais para quem jogava descalço na calçada. Com talento, disciplina e muita vontade, ele chamou a 
+                            atenção do Soccer Club, vestiu a camisa com orgulho e transformou cada treino em uma chance de provar seu 
+                            valor. Hoje, João Jonas entra em campo carregando a força da sua cidade, a paixão da torcida e a certeza 
+                            de que ainda está só no começo de uma história feita de gols, superação e amor pelo futebol."
+        )
 }
 
 private fun RawStandingItem.toApiClassificacao(): ApiClassificacao {
