@@ -16,20 +16,32 @@ android {
         versionName = "1.0"
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
+    signingConfigs {
+        create("release") {
+            storeFile = file("keystore.jks")
+            storePassword = "123123"
+            keyAlias = "key0"
+            keyPassword = "123123"
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
+        }
     }
 
-    buildFeatures {
+
+compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+buildFeatures {
         compose = true
-    }
+}
+
 }
 
 kotlin {

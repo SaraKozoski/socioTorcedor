@@ -32,7 +32,6 @@ fun TimeScreen(
             .fillMaxSize()
             .background(HomeColors.Fundo)
     ) {
-        // ── Tabs ──────────────────────────────────────────
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -59,7 +58,6 @@ fun TimeScreen(
             )
         }
 
-        // ── Card com conteúdo ─────────────────────────────
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -77,7 +75,6 @@ fun TimeScreen(
     }
 }
 
-// ── Tab individual ────────────────────────────────────────
 @Composable
 fun TabItem(
     texto: String,

@@ -18,7 +18,8 @@ import com.wideias.sociotorcedor.ui.planos.PlanoDetalheScreen
 import com.wideias.sociotorcedor.ui.planos.PlanosScreen
 import com.wideias.sociotorcedor.ui.time.TimeScreen
 import com.wideias.sociotorcedor.ui.time.JogadorDetalheScreen
-
+import com.wideias.sociotorcedor.ui.alimentacao.ProdutosAlimentacaoScreen
+import com.wideias.sociotorcedor.ui.alimentacao.DescricaoProdutoAlimentacaoScreen
 
 sealed class Tela(val rota: String) {
     object Home         : Tela("home")
@@ -79,7 +80,6 @@ fun NavegacaoInterna(navController: NavController, modifier: Modifier) {
             HomeScreen(navController = navController)
         }
 
-        composable(Tela.Lanchonete.rota) { }
 
         composable(Tela.Credito.rota) { }
 
@@ -89,6 +89,14 @@ fun NavegacaoInterna(navController: NavController, modifier: Modifier) {
 
         composable(Tela.Planos.rota) {
             PlanosScreen(navController = navController)
+        }
+
+        composable(Tela.Lanchonete.rota) {
+            ProdutosAlimentacaoScreen(navController)
+        }
+        composable("descricao_produto_alimentacao/{produtoId}") { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("produtoId") ?: "1"
+            DescricaoProdutoAlimentacaoScreen(produtoId = id, navController = navController)
         }
 
         composable(

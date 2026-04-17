@@ -40,7 +40,6 @@ fun JogadorDetalheScreen(
     val jogador: ApiJogador? =
         (state as? UiState.Sucesso<List<ApiJogador>>)
             ?.dados?.firstOrNull { it.atleta_id == atletaId }
-            ?: jogadoresMock.firstOrNull { it.atleta_id == atletaId }
 
     if (jogador == null) {
         Box(

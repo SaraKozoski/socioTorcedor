@@ -64,7 +64,6 @@ fun PlanoDetalheScreen(tipoPlano: String, navController: NavController) {
             .nestedScroll(nestedScrollConnection)
             .verticalScroll(scrollState)
     ) {
-        // ── Indicador pull down ───────────────────────────
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -91,7 +90,6 @@ fun PlanoDetalheScreen(tipoPlano: String, navController: NavController) {
             }
         }
 
-        // ── Cards dos planos ──────────────────────────────
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -138,7 +136,6 @@ fun PlanoDetalheScreen(tipoPlano: String, navController: NavController) {
             }
         }
 
-        // ── Especificações ────────────────────────────────
         Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
             Text(text = "ESPECIFICAÇÕES", color = Color.White, fontFamily = BebasNeue, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
             Text(text = plano.especificacoes, color = Color.White.copy(alpha = 0.85f), fontFamily = BebasNeue, fontSize = 13.sp, lineHeight = 18.sp)
@@ -166,7 +163,6 @@ fun PlanoDetalheScreen(tipoPlano: String, navController: NavController) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // ── Preço + botão ─────────────────────────────────
         Box(
             modifier = Modifier
                 .fillMaxWidth()

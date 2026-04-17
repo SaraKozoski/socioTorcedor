@@ -6,14 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
 
-// ─────────────────────────────────────────────────────────
-//  MODELOS — espelham exatamente os que você já usa na UI
-//  Os nomes dos campos internos mudaram (vêm da API-Football)
-//  mas os data classes expostos para a UI são os mesmos.
-// ─────────────────────────────────────────────────────────
-
-// ── Modelos RAW da API-Football ───────────────────────────
-
 data class RawTeam(
     val id: Int,
     val name: String,
@@ -28,7 +20,7 @@ data class RawGoals(val home: Int?, val away: Int?)
 data class RawScore(val fulltime: RawGoals)
 
 data class RawFixtureStatus(
-    val short: String   // "NS", "1H", "HT", "2H", "FT", "PST", etc.
+    val short: String  
 )
 
 data class RawFixture(
@@ -97,7 +89,6 @@ data class RawSquadItem(
 
 data class RawSquadResponse(val response: List<RawSquadTeamItem>)
 
-// Classificação
 data class RawStandingTeam(
     val id: Int,
     val name: String,
@@ -127,12 +118,6 @@ data class RawLeagueStandings(val standings: List<List<RawStandingItem>>)
 data class RawStandingLeagueWrapper(val league: RawLeagueStandings)
 
 data class RawStandingsResponse(val response: List<RawStandingLeagueWrapper>)
-
-// ─────────────────────────────────────────────────────────
-//  MODELOS DA UI — mantidos idênticos ao original
-//  para que ClassificacaoScreen, ElencoScreen, etc.
-//  não precisem mudar nada.
-// ─────────────────────────────────────────────────────────
 
 data class ApiTime(
     val time_id: Int,
@@ -208,7 +193,6 @@ data class RawSquadTeamItem(
 
 interface ApiFootballService {
 
-    // Últimas partidas do time na temporada
     @GET("fixtures")
     suspend fun getPartidas(
         @Header("x-apisports-key") apiKey: String,
@@ -218,7 +202,6 @@ interface ApiFootballService {
         @Query("last") last: Int = 10   // últimas 10 partidas
     ): RawFixtureResponse
 
-    // Próximas partidas do time
     @GET("fixtures")
     suspend fun getProximasPartidas(
         @Header("x-apisports-key") apiKey: String,
@@ -228,14 +211,12 @@ interface ApiFootballService {
         @Query("next") next: Int = 5    // próximas 5 partidas
     ): RawFixtureResponse
 
-    // Elenco do time
     @GET("players/squads")
     suspend fun getElenco(
         @Header("x-apisports-key") apiKey: String,
         @Query("team") teamId: Int
     ): RawSquadResponse
 
-    // Classificação do campeonato
     @GET("standings")
     suspend fun getClassificacao(
         @Header("x-apisports-key") apiKey: String,

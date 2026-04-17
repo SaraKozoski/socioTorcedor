@@ -14,7 +14,6 @@ class TimeRepository {
     val LEAGUE_ID         = 71
     val SEASON            = 2024
 
-    // ── Partidas — sempre do mock ─────────────────────────
     suspend fun getPartidas(): Result<List<ApiPartida>> {
         val partidas = jogosMock.mapIndexed { index, jogo ->
             jogo.toApiPartida(id = index + 1)
@@ -22,7 +21,6 @@ class TimeRepository {
         return Result.success(partidas)
     }
 
-    // ── Elenco ────────────────────────────────────────────
     suspend fun getElenco(): Result<List<ApiJogador>> {
         return try {
             val response = api.getElenco(API_KEY, TIME_ID)
@@ -44,8 +42,7 @@ class TimeRepository {
         }
     }
 
-    // ── Classificação ─────────────────────────────────────
-    suspend fun getClassificacao(): Result<List<ApiClassificacao>> {
+        suspend fun getClassificacao(): Result<List<ApiClassificacao>> {
         return try {
             val response = api.getClassificacao(API_KEY, LEAGUE_ID, SEASON)
 
@@ -65,7 +62,6 @@ class TimeRepository {
     }
 }
 
-// ── Converte Jogo (mock local) → ApiPartida ───────────────
 private fun Jogo.toApiPartida(id: Int): ApiPartida {
     val status = when {
         aoVivo -> "ao_vivo"
@@ -101,7 +97,6 @@ private fun Jogo.toApiPartida(id: Int): ApiPartida {
     )
 }
 
-// ── EXTENSÕES API ─────────────────────────────────────────
 
 private fun RawSquadPlayer.toApiJogador(): ApiJogador {
     return ApiJogador(
@@ -116,11 +111,7 @@ private fun RawSquadPlayer.toApiJogador(): ApiJogador {
         altura           = 1.80,
         peso             = null,
         pe               = "direito",
-        historia         = " ${name ?: "desconecido"} cresceu nas ruas de Ubatuba, onde a bola nunca desgrudava do pé e o sonho de ser jogador parecia 
-                            grande demais para quem jogava descalço na calçada. Com talento, disciplina e muita vontade, ele chamou a 
-                            atenção do Soccer Club, vestiu a camisa com orgulho e transformou cada treino em uma chance de provar seu 
-                            valor. Hoje, João Jonas entra em campo carregando a força da sua cidade, a paixão da torcida e a certeza 
-                            de que ainda está só no começo de uma história feita de gols, superação e amor pelo futebol."
+        historia         = " ${name ?: "desconecido"} cresceu nas ruas de Ubatuba, onde a bola nunca desgrudava do pé e o sonho de ser jogador parecia grande demais para quem jogava descalço na calçada. Com talento, disciplina e muita vontade, ele chamou a atenção do Soccer Club, vestiu a camisa com orgulho e transformou cada treino em uma chance de provar seu valor. Hoje, João Jonas entra em campo carregando a força da sua cidade, a paixão da torcida e a certeza de que ainda está só no começo de uma história feita de gols, superação e amor pelo futebol."
         )
 }
 

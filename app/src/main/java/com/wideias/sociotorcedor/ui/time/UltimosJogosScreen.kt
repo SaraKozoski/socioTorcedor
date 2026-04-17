@@ -101,7 +101,6 @@ fun UltimosJogosScreen(viewModel: TimeViewModel = viewModel()) {
     }
 }
 
-// ── Card AO VIVO ──────────────────────────────────────────
 @Composable
 fun CardPartidaAoVivo(partida: ApiPartida) {
     Box(
@@ -151,7 +150,7 @@ fun CardPartidaAoVivo(partida: ApiPartida) {
         }
     }
 }
-
+@Composable
 fun CardPartidaFutura(partida: ApiPartida) {
     Box(
         modifier = Modifier

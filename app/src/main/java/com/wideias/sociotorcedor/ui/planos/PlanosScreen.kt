@@ -31,7 +31,6 @@ fun PlanosScreen(navController: NavController) {
     var mostrarSheet by remember { mutableStateOf(false) }
     val planoAtual = planosInfo.firstOrNull { it.tipo == planoSelecionado }
 
-    // Sheet expandido → navega imediatamente sem delay
     LaunchedEffect(sheetState.currentValue) {
         if (sheetState.currentValue == SheetValue.Expanded && planoAtual != null) {
             val tipo = planoAtual.tipo.name
@@ -100,6 +99,28 @@ fun PlanosScreen(navController: NavController) {
             .background(HomeColors.Fundo)
             .verticalScroll(rememberScrollState())
     ) {
+        Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                text = "ENCONTRE SEU PLANO IDEAL",
+                fontFamily = BebasNeue,
+                fontSize = 28.sp,
+                color = Color.White,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                textAlign = TextAlign.Center
+            )
+
+            Text(
+                text = "Escolha a experiência perfeita para viver o jogo",
+                fontSize = 14.sp,
+                color = Color.White.copy(alpha = 0.6f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 4.dp),
+                textAlign = TextAlign.Center
+            )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -191,7 +212,6 @@ fun PlanosScreen(navController: NavController) {
     }
 }
 
-// ── Bottom Sheet Content ──────────────────────────────────
 @Composable
 fun PlanoBottomSheetContent(plano: PlanoInfo, onAssinar: () -> Unit) {
     Column(
@@ -248,7 +268,6 @@ fun PlanoBottomSheetContent(plano: PlanoInfo, onAssinar: () -> Unit) {
     }
 }
 
-// ── Card compacto ─────────────────────────────────────────
 @Composable
 fun CardPlanoCompacto(plano: PlanoInfo, selecionado: Boolean, scale: Float, onClick: () -> Unit) {
     Box(
