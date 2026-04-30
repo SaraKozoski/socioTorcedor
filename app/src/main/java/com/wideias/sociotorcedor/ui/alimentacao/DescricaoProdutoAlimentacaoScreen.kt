@@ -30,26 +30,37 @@ import androidx.navigation.NavController
 import com.wideias.sociotorcedor.ui.home.HomeColors
 import com.wideias.sociotorcedor.ui.theme.BebasNeue
 import coil.compose.AsyncImage
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.material3.SnackbarHostState
+import kotlinx.coroutines.launch
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DescricaoProdutoAlimentacaoScreen(
     produtoId: String,
-    navController: NavController
+    navController: NavController,
+    carrinhoViewModel: CarrinhoViewModel = viewModel()
 ) {
     val produto = remember(produtoId) {
         produtosAlimentacaoMock.find { it.id == produtoId }
             ?: produtosAlimentacaoMock.first()
     }
 
-    var ingredientes by remember { mutableStateOf(ingredientesPadrao) }
-    var adicionais   by remember { mutableStateOf(adicionaisPadrao) }
+    var ingredientes by remember { mutableStateOf(produto.ingredientes) }
+    var adicionais   by remember { mutableStateOf(produto.adicionais) }
     var observacao   by remember { mutableStateOf("") }
 
     val precoAdicionais = adicionais.filter { it.selecionado }.sumOf { it.preco }
     val precoTotal      = produto.preco + precoAdicionais
+    val snackbarHostState = remember { SnackbarHostState()}
+    val scope = rememberCoroutineScope()
+
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
@@ -82,10 +93,7 @@ fun DescricaoProdutoAlimentacaoScreen(
                 tonalElevation = 0.dp
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .navigationBarsPadding()
-                        .padding(horizontal = 20.dp, vertical = 14.dp),
+                    modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 20.dp, vertical = 14.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -107,15 +115,26 @@ fun DescricaoProdutoAlimentacaoScreen(
 
                     Button(
                         onClick = {
-                            // Em produção: adicione ao ViewModel do carrinho
-                            // e navegue para a tela de carrinho
-                            navController.popBackStack()
+                            val item = ItemCarrinho(
+                                id = java.util.UUID.randomUUID().toString(),
+                                produto = produto,
+                                ingredientesInclusos = ingredientes.filter { it.incluso },
+                                adicionaisSelecionados = adicionais.filter { it.selecionado },
+                                observacao = observacao,
+                                precoTotal = precoTotal
+                            )
+                            val sucesso = carrinhoViewModel.adicionarItem(item)
+                            scope.launch {
+                                if (sucesso) {
+                                    navController.popBackStack()
+                                } else {
+                                    snackbarHostState.showSnackbar("Limite de ${CarrinhoViewModel.LIMITE_POR_ITEM} unidades por produto atingido.")
+                                }
+                            }
                         },
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = HomeColors.Cards1),
-                        modifier = Modifier
-                            .height(48.dp)
-                            .widthIn(min = 180.dp)
+                        modifier = Modifier.height(48.dp).widthIn(min = 180.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Check,
@@ -137,24 +156,16 @@ fun DescricaoProdutoAlimentacaoScreen(
     ) { innerPadding ->
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .verticalScroll(rememberScrollState())
+            modifier = Modifier.fillMaxSize().padding(innerPadding).verticalScroll(rememberScrollState())
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(180.dp)
-                    .background(HomeColors.DetalhesCard1),
+                modifier = Modifier.fillMaxWidth().height(180.dp).background(HomeColors.DetalhesCard1),
                 contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
                     model = produto.imagemRes,
                     contentDescription = produto.nome,
-                    modifier = Modifier
-                        .size(56.dp)
-                        .padding(4.dp),
+                    modifier = Modifier.size(100.dp).padding(4.dp),
                     contentScale = ContentScale.Fit
                 )
             }
@@ -186,40 +197,42 @@ fun DescricaoProdutoAlimentacaoScreen(
 
             HorizontalDivider(color = HomeColors.CardEscuro, thickness = 1.dp)
 
-            SecaoTitle(titulo = "INGREDIENTES")
-
-            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                ingredientes.forEach { item ->
-                    IngredienteRow(
-                        ingrediente = item,
-                        onToggle = {
-                            ingredientes = ingredientes.map {
-                                if (it.id == item.id) it.copy(incluso = !it.incluso) else it
+            if (ingredientes.isNotEmpty()) {
+                HorizontalDivider(color = HomeColors.CardEscuro, thickness = 1.dp)
+                SecaoTitle(titulo = "INGREDIENTES")
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    ingredientes.forEach { item ->
+                        IngredienteRow(
+                            ingrediente = item,
+                            onToggle = {
+                                ingredientes = ingredientes.map {
+                                    if (it.id == item.id) it.copy(incluso = !it.incluso) else it
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-            HorizontalDivider(color = HomeColors.CardEscuro, thickness = 1.dp)
-
-            SecaoTitle(titulo = "ADICIONAIS")
-
-            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                adicionais.forEach { item ->
-                    AdicionalRow(
-                        adicional = item,
-                        onToggle = {
-                            adicionais = adicionais.map {
-                                if (it.id == item.id) it.copy(selecionado = !it.selecionado) else it
+            if (adicionais.isNotEmpty()) {
+                HorizontalDivider(color = HomeColors.CardEscuro, thickness = 1.dp)
+                SecaoTitle(titulo = "ADICIONAIS")
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    adicionais.forEach { item ->
+                        AdicionalRow(
+                            adicional = item,
+                            onToggle = {
+                                adicionais = adicionais.map {
+                                    if (it.id == item.id) it.copy(selecionado = !it.selecionado) else it
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
             HorizontalDivider(color = HomeColors.CardEscuro, thickness = 1.dp)
 
             SecaoTitle(titulo = "OBSERVAÇÕES")
@@ -235,10 +248,7 @@ fun DescricaoProdutoAlimentacaoScreen(
                         color = HomeColors.TextoCinza
                     )
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 24.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 24.dp),
                 shape = RoundedCornerShape(10.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = Color.White,
@@ -279,19 +289,12 @@ private fun IngredienteRow(
     onToggle: () -> Unit
 ) {
     val bgColor by animateColorAsState(
-        targetValue = if (ingrediente.incluso) HomeColors.CardEscuro
-                      else HomeColors.Cards1.copy(alpha = 0.15f),
+        targetValue = if (ingrediente.incluso) HomeColors.CardEscuro else HomeColors.Cards1.copy(alpha = 0.15f),
         label = "ingrediente_bg"
     )
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(bgColor)
-            .clickable { onToggle() }
-            .padding(horizontal = 14.dp, vertical = 12.dp),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).clip(RoundedCornerShape(8.dp)).background(bgColor).clickable { onToggle() }.padding(horizontal = 14.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -299,10 +302,8 @@ private fun IngredienteRow(
             text = ingrediente.nome,
             fontFamily = BebasNeue,
             fontSize = 15.sp,
-            color = if (ingrediente.incluso) HomeColors.TextoBranco
-                    else HomeColors.TextoCinza,
-            textDecoration = if (!ingrediente.incluso) TextDecoration.LineThrough
-                              else TextDecoration.None
+            color = if (ingrediente.incluso) HomeColors.TextoBranco else HomeColors.TextoCinza,
+            textDecoration = if (!ingrediente.incluso) TextDecoration.LineThrough else TextDecoration.None
         )
 
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -338,20 +339,17 @@ private fun IngredienteRow(
         }
     }
 }
-
 @Composable
 private fun AdicionalRow(
     adicional: AdicionalAlimentacao,
     onToggle: () -> Unit
 ) {
     val bgColor by animateColorAsState(
-        targetValue = if (adicional.selecionado) HomeColors.DetalhesCard1
-                      else HomeColors.CardEscuro,
+        targetValue = if (adicional.selecionado) HomeColors.DetalhesCard1 else HomeColors.CardEscuro,
         label = "adicional_bg"
     )
     val borderColor by animateColorAsState(
-        targetValue = if (adicional.selecionado) HomeColors.Cards1
-                      else Color.Transparent,
+        targetValue = if (adicional.selecionado) HomeColors.Cards1 else Color.Transparent,
         label = "adicional_border"
     )
 
@@ -368,7 +366,6 @@ private fun AdicionalRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            // Checkbox visual
             Box(
                 modifier = Modifier
                     .size(20.dp)

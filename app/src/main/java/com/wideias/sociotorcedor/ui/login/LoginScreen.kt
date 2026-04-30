@@ -21,12 +21,16 @@ import com.wideias.sociotorcedor.ui.theme.BebasNeue
 import com.wideias.sociotorcedor.ui.theme.FundoEscuro
 import com.wideias.sociotorcedor.ui.theme.VermelhoBotao
 import com.wideias.sociotorcedor.ui.theme.VermelhoFundoLogin
+import com.wideias.sociotorcedor.viewmodel.UserViewModel
 
 @Composable
 fun LoginScreen(
     onLoginSucesso: () -> Unit,
     onCadastroClick: () -> Unit,
-    viewModel: LoginViewModel = viewModel()
+    userViewModel: UserViewModel,
+    viewModel: LoginViewModel = viewModel(
+        factory = LoginViewModelFactory(userViewModel)
+    )
 ) {
     val loginState by viewModel.loginState.collectAsState()
     var cpf by remember { mutableStateOf("") }
@@ -77,7 +81,7 @@ fun LoginScreen(
             value = cpf,
             onValueChange = { if (it.length <= 11) cpf = it.filter { c -> c.isDigit() } },
             label = { Text("CPF", fontFamily = BebasNeue) },
-            placeholder = { Text("123.123.123.12", fontFamily = BebasNeue) },
+            placeholder = { Text("12345678901", fontFamily = BebasNeue) },
             textStyle = TextStyle(fontFamily = BebasNeue, color = Color.Black),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true,
@@ -93,7 +97,9 @@ fun LoginScreen(
                 unfocusedLabelColor = Color.Black,
                 cursorColor = Color.Black
             ),
-            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
         )
 
         OutlinedTextField(
@@ -116,7 +122,9 @@ fun LoginScreen(
                 unfocusedLabelColor = Color.Black,
                 cursorColor = Color.Black
             ),
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
         )
 
         if (loginState is LoginState.Erro) {
@@ -135,10 +143,10 @@ fun LoginScreen(
             onClick = { viewModel.loginComCpf(cpf, senha) },
             enabled = loginState !is LoginState.Carregando,
             shape = RoundedCornerShape(25.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = VermelhoBotao
-            ),
-            modifier = Modifier.fillMaxWidth().height(50.dp)
+            colors = ButtonDefaults.buttonColors(containerColor = VermelhoBotao),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
         ) {
             if (loginState is LoginState.Carregando) {
                 CircularProgressIndicator(
@@ -167,7 +175,9 @@ fun LoginScreen(
             onClick = { },
             enabled = loginState !is LoginState.Carregando,
             shape = RoundedCornerShape(25.dp),
-            modifier = Modifier.fillMaxWidth().height(50.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
         ) {
             Text("Entrar com Google", fontSize = 16.sp, color = Color.White, fontFamily = BebasNeue)
         }

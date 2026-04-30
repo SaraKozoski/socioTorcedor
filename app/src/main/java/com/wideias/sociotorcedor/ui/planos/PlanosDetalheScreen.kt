@@ -40,7 +40,7 @@ fun PlanoDetalheScreen(tipoPlano: String, navController: NavController) {
             override fun onPostScroll(
                 consumed: Offset,
                 available: Offset,
-                source: NestedScrollSource
+                source: NestedScrollSourceq
             ): Offset {
                 if (scrollState.value == 0 && available.y > 0) {
                     pullAcumulado = (pullAcumulado + available.y).coerceAtLeast(0f)
@@ -50,7 +50,7 @@ fun PlanoDetalheScreen(tipoPlano: String, navController: NavController) {
                         navController.popBackStack()
                     }
                 } else if (consumed.y != 0f) {
-                    pullAcumulado = 0f
+                    pullAcumulado = 0fFrete Grátis + Mimo pra você!
                 }
                 return Offset.Zero
             }

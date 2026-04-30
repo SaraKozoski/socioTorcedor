@@ -3,10 +3,8 @@ package com.wideias.sociotorcedor.ui.planos
 import androidx.compose.ui.graphics.Color
 import com.wideias.sociotorcedor.ui.home.HomeColors
 
-// ── Enum de tipos de plano ────────────────────────────────
 enum class TipoPlano { RED, GOLD, BLACK, NENHUM }
 
-// ── Data class do plano ───────────────────────────────────
 data class PlanoInfo(
     val tipo: TipoPlano,
     val nome: String,
@@ -17,7 +15,6 @@ data class PlanoInfo(
     val diferenciais: List<Pair<String, String>>
 )
 
-// ── Lista de planos ───────────────────────────────────────
 val planosInfo = listOf(
     PlanoInfo(
         tipo = TipoPlano.RED,

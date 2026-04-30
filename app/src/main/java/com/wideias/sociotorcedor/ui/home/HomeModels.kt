@@ -22,7 +22,6 @@ data class Plano(
 )
 
 val partidasMock = listOf(
-    // Próximo jogo (futura)
     Partida(
         timeCasa = "CAP",
         timeVisitante = "CFC",
@@ -30,7 +29,6 @@ val partidasMock = listOf(
         competicao = "Serie A - Brasileirão",
         futura = true
     ),
-    // Jogo ao vivo ou mais recente (principal)
     Partida(
         timeCasa = "CAP",
         timeVisitante = "CFC",
@@ -40,7 +38,6 @@ val partidasMock = listOf(
         competicao = "Serie A - Brasileirão",
         aoVivo = true
     ),
-    // Últimos jogos (secundários)
     Partida(
         timeCasa = "CAP",
         timeVisitante = "PAR",

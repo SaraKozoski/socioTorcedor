@@ -20,6 +20,11 @@ import com.wideias.sociotorcedor.ui.time.TimeScreen
 import com.wideias.sociotorcedor.ui.time.JogadorDetalheScreen
 import com.wideias.sociotorcedor.ui.alimentacao.ProdutosAlimentacaoScreen
 import com.wideias.sociotorcedor.ui.alimentacao.DescricaoProdutoAlimentacaoScreen
+import com.wideias.sociotorcedor.ui.alimentacao.CarrinhoScreen
+import com.wideias.sociotorcedor.ui.alimentacao.CarrinhoViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.wideias.sociotorcedor.viewmodel.UserViewModel 
+import com.wideias.sociotorcedor.ui.login.LoginScreen
 
 sealed class Tela(val rota: String) {
     object Home         : Tela("home")
@@ -40,7 +45,9 @@ private val telasComNavegacao = listOf(
     Tela.Ingresso.rota,
     Tela.Planos.rota,
     Tela.Time.rota,
-    "plano_detalhe"
+    "plano_detalhe",
+    "carrinho",
+    "login"
 )
 
 @Composable
@@ -48,6 +55,8 @@ fun AppNavigation() {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val rotaAtual = backStackEntry?.destination?.route
+    val carrinhoViewModel: CarrinhoViewModel = viewModel()
+    val userViewModel: UserViewModel = viewModel()
 
     val mostrarNavegacao = telasComNavegacao.any { rota ->
         rotaAtual?.startsWith(rota) == true
@@ -58,15 +67,30 @@ fun AppNavigation() {
             topBar = { HeaderSection(navController = navController) },
             bottomBar = { BottomNavigationBar(navController = navController) }
         ) { innerPadding ->
-            NavegacaoInterna(navController = navController, modifier = Modifier.padding(innerPadding))
+            NavegacaoInterna(
+                navController = navController,
+                modifier = Modifier.padding(innerPadding),
+                carrinhoViewModel = carrinhoViewModel,
+                userViewModel = userViewModel
+            )
         }
     } else {
-        NavegacaoInterna(navController = navController, modifier = Modifier)
+        NavegacaoInterna(
+            navController = navController,
+            modifier = Modifier,
+            carrinhoViewModel = carrinhoViewModel,
+            userViewModel = userViewModel
+        )
     }
 }
 
 @Composable
-fun NavegacaoInterna(navController: NavController, modifier: Modifier) {
+fun NavegacaoInterna(
+    navController: NavController,
+    modifier: Modifier,
+    carrinhoViewModel: CarrinhoViewModel,
+    userViewModel: UserViewModel
+) {
     NavHost(
         navController = navController as androidx.navigation.NavHostController,
         startDestination = Tela.Home.rota,
@@ -77,9 +101,16 @@ fun NavegacaoInterna(navController: NavController, modifier: Modifier) {
         popExitTransition = { fadeOut(animationSpec = tween(220)) }
     ) {
         composable(Tela.Home.rota) {
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, userViewModel = userViewModel) 
         }
 
+        composable("login") {
+            LoginScreen(
+                onLoginSucesso = { navController.navigate(Tela.Home.rota) },
+                onCadastroClick = { /* navController.navigate("cadastro") */ },
+                userViewModel = userViewModel
+            )
+        }
 
         composable(Tela.Credito.rota) { }
 
@@ -92,31 +123,36 @@ fun NavegacaoInterna(navController: NavController, modifier: Modifier) {
         }
 
         composable(Tela.Lanchonete.rota) {
-            ProdutosAlimentacaoScreen(navController)
+            ProdutosAlimentacaoScreen(navController, carrinhoViewModel, userViewModel)
         }
+
         composable("descricao_produto_alimentacao/{produtoId}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("produtoId") ?: "1"
-            DescricaoProdutoAlimentacaoScreen(produtoId = id, navController = navController)
+            DescricaoProdutoAlimentacaoScreen(
+                produtoId = id,
+                navController = navController,
+                carrinhoViewModel = carrinhoViewModel
+            )
+        }
+
+        composable("carrinho") {
+            CarrinhoScreen(
+                navController = navController,
+                carrinhoViewModel = carrinhoViewModel,
+                userViewModel = userViewModel
+            )
         }
 
         composable(
             route = Tela.PlanoDetalhe.rota,
-
             enterTransition = {
                 slideInVertically(
                     initialOffsetY = { it },
                     animationSpec = tween(320, easing = FastOutSlowInEasing)
                 )
             },
-
-            exitTransition = {
-                fadeOut(animationSpec = tween(1))
-            },
-
-            popEnterTransition = {
-                fadeIn(animationSpec = tween(1))
-            },
-
+            exitTransition = { fadeOut(animationSpec = tween(1)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(1)) },
             popExitTransition = {
                 slideOutVertically(
                     targetOffsetY = { it },
@@ -131,9 +167,10 @@ fun NavegacaoInterna(navController: NavController, modifier: Modifier) {
         composable(Tela.Time.rota) {
             TimeScreen(navController = navController)
         }
+
         composable("jogador/{atletaId}") { backStackEntry ->
-    val id = backStackEntry.arguments?.getString("atletaId")?.toInt() ?: 0
-    JogadorDetalheScreen(atletaId = id, navController = navController)
-}
+            val id = backStackEntry.arguments?.getString("atletaId")?.toInt() ?: 0
+            JogadorDetalheScreen(atletaId = id, navController = navController)
+        }
     }
 }

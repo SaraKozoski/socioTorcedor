@@ -1,12 +1,43 @@
 package com.wideias.sociotorcedor.ui.login
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.wideias.sociotorcedor.data.local.entity.SocioEntity
+import com.wideias.sociotorcedor.viewmodel.UserViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+private val MOCK_SOCIO_COM_PLANO = SocioEntity(
+    id = "1",
+    nome = "João Torcedor",
+    cpf = "12345678901",
+    email = "joao@teste.com",
+    plano = "Plano Ouro",
+    numeroCadastro = "0001",
+    fotoUrl = null
+)
+
+private val MOCK_SOCIO_SEM_PLANO = SocioEntity(
+    id = "2",
+    nome = "Maria Torcedora",
+    cpf = "98765432100",
+    email = "maria@teste.com",
+    plano = "",
+    numeroCadastro = "0002",
+    fotoUrl = null
+)
+
+private val MOCK_USUARIOS = mapOf(
+    "12345678901" to Pair("123456", MOCK_SOCIO_COM_PLANO),
+    "98765432100" to Pair("123456", MOCK_SOCIO_SEM_PLANO)
+)
+
+class LoginViewModel(
+    private val userViewModel: UserViewModel
+) : ViewModel() {
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
     val loginState: StateFlow<LoginState> = _loginState
@@ -20,12 +51,16 @@ class LoginViewModel : ViewModel() {
             _loginState.value = LoginState.Erro("Senha deve ter pelo menos 6 caracteres")
             return
         }
+
         _loginState.value = LoginState.Carregando
         viewModelScope.launch {
-            try {
+            delay(800)
+            val usuario = MOCK_USUARIOS[cpf]
+            if (usuario != null && usuario.first == senha) {
+                userViewModel.login(usuario.second)
                 _loginState.value = LoginState.Sucesso
-            } catch (e: Exception) {
-                _loginState.value = LoginState.Erro("Erro: ${e.message}")
+            } else {
+                _loginState.value = LoginState.Erro("CPF ou senha incorretos")
             }
         }
     }
@@ -43,6 +78,18 @@ class LoginViewModel : ViewModel() {
 
     fun resetState() {
         _loginState.value = LoginState.Idle
+    }
+}
+
+class LoginViewModelFactory(
+    private val userViewModel: UserViewModel
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return LoginViewModel(userViewModel) as T
+        }
+        throw IllegalArgumentException("ViewModel desconhecido")
     }
 }
 
