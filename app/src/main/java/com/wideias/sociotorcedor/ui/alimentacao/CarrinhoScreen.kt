@@ -40,7 +40,7 @@ fun CarrinhoScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("CARRINHO", fontFamily = BebasNeue, fontSize = 20.sp, color = Color.White) },
+                title = { Text("", fontFamily = BebasNeue, fontSize = 20.sp, color = Color.White) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Voltar", tint = Color.White)
@@ -69,10 +69,7 @@ fun CarrinhoScreen(
                                 color = Color.White, fontWeight = FontWeight.Bold
                             )
                         }
-                        Button(
-                            onClick = {  userViewModel.adicionarPontos(carrinhoViewModel.precoTotal)
-                                carrinhoViewModel.limparCarrinho()
-                                navController.popBackStack()},
+                        Button(onClick = { navController.navigate("pagamento_alimentacao") },
                             shape = RoundedCornerShape(12.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = HomeColors.Cards1),
                             modifier = Modifier.height(48.dp).widthIn(min = 160.dp)

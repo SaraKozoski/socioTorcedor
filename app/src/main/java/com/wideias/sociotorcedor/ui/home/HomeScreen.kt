@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 fun HomeScreen(navController: NavController, userViewModel: UserViewModel) {
     val usuario by userViewModel.usuario.collectAsState()
     val pontos by userViewModel.pontos.collectAsState()
+    val saldo by userViewModel.saldo.collectAsState()
 
     Column(
         modifier = Modifier
@@ -29,6 +30,7 @@ fun HomeScreen(navController: NavController, userViewModel: UserViewModel) {
 
         BetCard(
             nomeUsuario = usuario?.nome ?: "N/A",
+            saldoAtual = saldo,
             pontosAtual = pontos,
             pontosMaximo = 250
         )

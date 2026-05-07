@@ -23,8 +23,11 @@ import com.wideias.sociotorcedor.ui.alimentacao.DescricaoProdutoAlimentacaoScree
 import com.wideias.sociotorcedor.ui.alimentacao.CarrinhoScreen
 import com.wideias.sociotorcedor.ui.alimentacao.CarrinhoViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.wideias.sociotorcedor.viewmodel.UserViewModel 
+import com.wideias.sociotorcedor.viewmodel.UserViewModel
 import com.wideias.sociotorcedor.ui.login.LoginScreen
+import com.wideias.sociotorcedor.ui.credito.CreditoScreen  
+import com.wideias.sociotorcedor.ui.pagamentos.PagamentoScreen
+
 
 sealed class Tela(val rota: String) {
     object Home         : Tela("home")
@@ -47,7 +50,8 @@ private val telasComNavegacao = listOf(
     Tela.Time.rota,
     "plano_detalhe",
     "carrinho",
-    "login"
+    "login",
+    "pagamento_alimentacao"
 )
 
 @Composable
@@ -101,7 +105,7 @@ fun NavegacaoInterna(
         popExitTransition = { fadeOut(animationSpec = tween(220)) }
     ) {
         composable(Tela.Home.rota) {
-            HomeScreen(navController = navController, userViewModel = userViewModel) 
+            HomeScreen(navController = navController, userViewModel = userViewModel)
         }
 
         composable("login") {
@@ -112,7 +116,9 @@ fun NavegacaoInterna(
             )
         }
 
-        composable(Tela.Credito.rota) { }
+        composable(Tela.Credito.rota) {
+            CreditoScreen(navController = navController, userViewModel = userViewModel)
+        }
 
         composable(Tela.Ingresso.rota) {
             PlanosScreen(navController = navController)
@@ -137,6 +143,14 @@ fun NavegacaoInterna(
 
         composable("carrinho") {
             CarrinhoScreen(
+                navController = navController,
+                carrinhoViewModel = carrinhoViewModel,
+                userViewModel = userViewModel
+            )
+        }
+
+        composable("pagamento_alimentacao") {
+            PagamentoScreen(
                 navController = navController,
                 carrinhoViewModel = carrinhoViewModel,
                 userViewModel = userViewModel

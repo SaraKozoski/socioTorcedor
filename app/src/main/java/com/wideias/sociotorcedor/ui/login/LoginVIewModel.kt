@@ -99,3 +99,4 @@ sealed class LoginState {
     object Sucesso : LoginState()
     data class Erro(val mensagem: String) : LoginState()
 }
+
