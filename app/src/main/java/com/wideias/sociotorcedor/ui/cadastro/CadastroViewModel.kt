@@ -34,7 +34,6 @@ class CadastroViewModel(
         numero: String,
         senha: String
     ) {
-        // Validações básicas
         if (nome.isBlank() || email.isBlank() || cpf.isBlank() || senha.isBlank()) {
             _cadastroState.value = CadastroState.Erro("Preencha todos os campos obrigatórios.")
             return
