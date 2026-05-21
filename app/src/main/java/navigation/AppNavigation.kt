@@ -27,6 +27,7 @@ import com.wideias.sociotorcedor.viewmodel.UserViewModel
 import com.wideias.sociotorcedor.ui.login.LoginScreen
 import com.wideias.sociotorcedor.ui.credito.CreditoScreen  
 import com.wideias.sociotorcedor.ui.pagamentos.PagamentoScreen
+import com.wideias.sociotorcedor.ui.perfil.ProfileScreen
 
 
 sealed class Tela(val rota: String) {
@@ -39,6 +40,8 @@ sealed class Tela(val rota: String) {
         fun comTipo(tipo: String) = "plano_detalhe/$tipo"
     }
     object Time : Tela("time")
+    object Perfil : Tela("perfil")
+
 }
 
 private val telasComNavegacao = listOf(
@@ -48,6 +51,7 @@ private val telasComNavegacao = listOf(
     Tela.Ingresso.rota,
     Tela.Planos.rota,
     Tela.Time.rota,
+    Tela.Perfil.rota,
     "plano_detalhe",
     "carrinho",
     "login",
@@ -130,6 +134,15 @@ fun NavegacaoInterna(
 
         composable(Tela.Lanchonete.rota) {
             ProdutosAlimentacaoScreen(navController, carrinhoViewModel, userViewModel)
+        }
+
+        composable(Tela.Perfil.rota) {
+            ProfileScreen(
+                navController = navController,
+                userViewModel = userViewModel,
+                onVoltarClick = { navController.popBackStack() },
+                onEsqueciSenhaClick = { /* TODO: navegar para tela de recuperação de senha */ }
+            )
         }
 
         composable("descricao_produto_alimentacao/{produtoId}") { backStackEntry ->
