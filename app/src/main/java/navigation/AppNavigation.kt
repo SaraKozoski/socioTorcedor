@@ -28,6 +28,7 @@ import com.wideias.sociotorcedor.ui.login.LoginScreen
 import com.wideias.sociotorcedor.ui.credito.CreditoScreen  
 import com.wideias.sociotorcedor.ui.pagamentos.PagamentoScreen
 import com.wideias.sociotorcedor.ui.perfil.ProfileScreen
+import com.wideias.sociotorcedor.ui.cadastro.CadastroScreen
 
 
 sealed class Tela(val rota: String) {
@@ -55,7 +56,8 @@ private val telasComNavegacao = listOf(
     "plano_detalhe",
     "carrinho",
     "login",
-    "pagamento_alimentacao"
+    "pagamento_alimentacao",
+    "cadastro"
 )
 
 @Composable
@@ -115,8 +117,16 @@ fun NavegacaoInterna(
         composable("login") {
             LoginScreen(
                 onLoginSucesso = { navController.navigate(Tela.Home.rota) },
-                onCadastroClick = { /* navController.navigate("cadastro") */ },
+                onCadastroClick = {  navController.navigate("cadastro")  },
                 userViewModel = userViewModel
+            )
+        }
+
+        composable("cadastro") {
+            CadastroScreen(
+                onCadastroSucesso = { navController.navigate("home") },
+                onLoginClick      = { navController.popBackStack() },
+                userViewModel     = userViewModel
             )
         }
 
