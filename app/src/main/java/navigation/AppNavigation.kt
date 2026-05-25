@@ -29,6 +29,8 @@ import com.wideias.sociotorcedor.ui.credito.CreditoScreen
 import com.wideias.sociotorcedor.ui.pagamentos.PagamentoScreen
 import com.wideias.sociotorcedor.ui.perfil.ProfileScreen
 import com.wideias.sociotorcedor.ui.cadastro.CadastroScreen
+import com.wideias.sociotorcedor.ui.meueespaco.MeuEspacoScreen
+
 
 
 sealed class Tela(val rota: String) {
@@ -43,6 +45,7 @@ sealed class Tela(val rota: String) {
     object Time : Tela("time")
     object Perfil : Tela("perfil")
 
+
 }
 
 private val telasComNavegacao = listOf(
@@ -53,6 +56,7 @@ private val telasComNavegacao = listOf(
     Tela.Planos.rota,
     Tela.Time.rota,
     Tela.Perfil.rota,
+    "meueespaco",
     "plano_detalhe",
     "carrinho",
     "login",
@@ -139,7 +143,22 @@ fun NavegacaoInterna(
         }
 
         composable(Tela.Planos.rota) {
-            PlanosScreen(navController = navController)
+            val temPlano = userViewModel.temPlano
+            if (temPlano) {
+                MeuEspacoScreen(
+                    navController = navController,
+                    userViewModel = userViewModel
+                )
+            } else {
+                PlanosScreen(navController = navController)
+            }
+        }
+ 
+        composable("meueespaco") {
+            MeuEspacoScreen(
+                navController = navController,
+                userViewModel = userViewModel
+            )
         }
 
         composable(Tela.Lanchonete.rota) {

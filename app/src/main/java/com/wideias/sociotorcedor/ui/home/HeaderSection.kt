@@ -92,6 +92,19 @@ fun HeaderSection(navController: NavController) {
                         navController.navigate("perfil")
                     }
                 )
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = "MEU ESPAÇO",
+                            fontFamily = BebasNeue,
+                            fontSize = 16.sp
+                        )
+                    },
+                    onClick = {
+                        menuAberto = false
+                        navController.navigate("meueespaco")
+                    }
+                )
             }
         }
 
