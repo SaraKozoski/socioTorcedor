@@ -36,7 +36,10 @@ fun HomeScreen(navController: NavController, userViewModel: UserViewModel) {
         )
 
         Spacer(modifier = Modifier.height(20.dp))
-        ResultsSection()
+        ResultsSection(
+            onApostarClick = { navController.navigate("apostas") },
+            onComprarClick = { /* sua lógica de compra aqui */ }
+)
         Spacer(modifier = Modifier.height(20.dp))
 
         if (usuario != null) {

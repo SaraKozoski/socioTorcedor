@@ -11,23 +11,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 private val MOCK_SOCIO_COM_PLANO = SocioEntity(
-    id = "1",
-    nome = "João Torcedor",
-    cpf = "12345678901",
-    email = "joao@teste.com",
-    plano = "Plano Ouro",
+    id             = "1",
+    nome           = "João Torcedor",
+    cpf            = "12345678901",
+    email          = "joao@teste.com",
+    plano          = "Plano Ouro",
     numeroCadastro = "0001",
-    fotoUrl = null
+    fotoUrl        = null
 )
 
 private val MOCK_SOCIO_SEM_PLANO = SocioEntity(
-    id = "2",
-    nome = "Maria Torcedora",
-    cpf = "98765432100",
-    email = "maria@teste.com",
-    plano = "",
+    id             = "2",
+    nome           = "Maria Torcedora",
+    cpf            = "98765432100",
+    email          = "maria@teste.com",
+    plano          = "",
     numeroCadastro = "0002",
-    fotoUrl = null
+    fotoUrl        = null
 )
 
 private val MOCK_USUARIOS = mapOf(
@@ -57,7 +57,7 @@ class LoginViewModel(
             delay(800)
             val usuario = MOCK_USUARIOS[cpf]
             if (usuario != null && usuario.first == senha) {
-                userViewModel.login(usuario.second)
+                userViewModel.login(usuario.second, senha)
                 _loginState.value = LoginState.Sucesso
             } else {
                 _loginState.value = LoginState.Erro("CPF ou senha incorretos")
@@ -94,9 +94,8 @@ class LoginViewModelFactory(
 }
 
 sealed class LoginState {
-    object Idle : LoginState()
+    object Idle       : LoginState()
     object Carregando : LoginState()
-    object Sucesso : LoginState()
+    object Sucesso    : LoginState()
     data class Erro(val mensagem: String) : LoginState()
 }
-

@@ -9,7 +9,8 @@ data class ProdutoAlimentacao(
     val imagemRes: Int,
     val categoria: String,
     val ingredientes: List<IngredienteAlimentacao> = emptyList(),
-    val adicionais: List<AdicionalAlimentacao> = adicionaisPadrao
+    val adicionais: List<AdicionalAlimentacao> = adicionaisPadrao,
+    val pontos: Int? = null 
 )
 
 data class IngredienteAlimentacao(
@@ -58,7 +59,7 @@ val adicionaisPadraoBebidas = listOf(
 
 
 val produtosAlimentacaoMock = listOf(
-    ProdutoAlimentacao("1", "Hambúrguer", 24.90, "Smash artesanal com cheddar",    R.drawable.hamburguer, "Lanches", ingredientes = ingredientesHamburguer, adicionais = adicionaisPadrao),
+    ProdutoAlimentacao("1", "Hambúrguer", 24.90, "Smash artesanal com cheddar",    R.drawable.hamburguer, "Lanches", ingredientes = ingredientesHamburguer, adicionais = adicionaisPadrao, pontos = 10),
     ProdutoAlimentacao("2", "Pizza",      49.90, "Calabresa com borda recheada",   R.drawable.pizza,      "Lanches",  adicionais = adicionaisPadrao),
     ProdutoAlimentacao("3", "Suco",        8.50, "Natural",                        R.drawable.suco,       "Bebidas",  adicionais = adicionaisPadraoBebidas),
     ProdutoAlimentacao("4", "Sorvete",    12.00, "Chocolate com pedaços de brownie",R.drawable.sorvete,   "Sobremesas"),

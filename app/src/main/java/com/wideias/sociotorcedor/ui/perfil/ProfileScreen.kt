@@ -191,24 +191,6 @@ fun ProfileScreen(
     }
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        "Meu Perfil",
-                        fontFamily = BebasNeue,
-                        fontSize = 22.sp,
-                        color = Color.White
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onVoltarClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Voltar", tint = Color.White)
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = FundoEscuro)
-            )
-        },
         containerColor = FundoEscuro
     ) { paddingValues ->
 

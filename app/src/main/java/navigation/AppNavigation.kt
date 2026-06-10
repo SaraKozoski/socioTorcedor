@@ -30,6 +30,8 @@ import com.wideias.sociotorcedor.ui.pagamentos.PagamentoScreen
 import com.wideias.sociotorcedor.ui.perfil.ProfileScreen
 import com.wideias.sociotorcedor.ui.cadastro.CadastroScreen
 import com.wideias.sociotorcedor.ui.meueespaco.MeuEspacoScreen
+import com.wideias.sociotorcedor.ui.apostas.ApostasScreen
+import com.wideias.sociotorcedor.ui.ingressos.ComprarIngressosScreen
 
 
 
@@ -37,14 +39,13 @@ sealed class Tela(val rota: String) {
     object Home         : Tela("home")
     object Lanchonete   : Tela("lanchonete")
     object Credito      : Tela("credito")
-    object Ingresso     : Tela("ingresso")
     object Planos       : Tela("planos")
     object PlanoDetalhe : Tela("plano_detalhe/{tipoPlano}") {
         fun comTipo(tipo: String) = "plano_detalhe/$tipo"
     }
     object Time : Tela("time")
     object Perfil : Tela("perfil")
-
+    object Ingresso : Tela("ingresso")
 
 }
 
@@ -61,7 +62,8 @@ private val telasComNavegacao = listOf(
     "carrinho",
     "login",
     "pagamento_alimentacao",
-    "cadastro"
+    "cadastro",
+    "apostas"
 )
 
 @Composable
@@ -78,7 +80,7 @@ fun AppNavigation() {
 
     if (mostrarNavegacao) {
         Scaffold(
-            topBar = { HeaderSection(navController = navController) },
+            topBar = { HeaderSection(navController = navController,  userViewModel = userViewModel) },
             bottomBar = { BottomNavigationBar(navController = navController) }
         ) { innerPadding ->
             NavegacaoInterna(
@@ -139,7 +141,7 @@ fun NavegacaoInterna(
         }
 
         composable(Tela.Ingresso.rota) {
-            PlanosScreen(navController = navController)
+            ComprarIngressosScreen(navController = navController)
         }
 
         composable(Tela.Planos.rota) {
@@ -181,6 +183,10 @@ fun NavegacaoInterna(
                 navController = navController,
                 carrinhoViewModel = carrinhoViewModel
             )
+        }
+
+        composable("apostas") {
+            ApostasScreen( navController = navController)
         }
 
         composable("carrinho") {
