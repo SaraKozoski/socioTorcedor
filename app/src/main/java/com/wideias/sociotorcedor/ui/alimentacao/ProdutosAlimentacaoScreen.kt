@@ -182,10 +182,6 @@ fun ProdutosAlimentacaoScreen(
     }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Tab reutilizável
-// ─────────────────────────────────────────────────────────────────────────────
-
 @Composable
 private fun TabAlimentacao(
     label: String,

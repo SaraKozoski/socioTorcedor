@@ -5,24 +5,21 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-
-private val EsquemaEscuro = darkColorScheme(
-    primary = VermelhoBotao,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
-    background = FundoEscuro,
-    surface = FundoEscuro,
+private val AppColorScheme = darkColorScheme(
+    primary    = ClubConfig.primaryMain,
+    secondary  = PurpleGrey80,
+    tertiary   = Pink80,
+    background = ClubConfig.background,
+    surface    = ClubConfig.background,
     onBackground = Color.White,
-    onSurface = Color.White
+    onSurface    = Color.White
 )
 
 @Composable
-fun SocioTorcedorTheme(
-    content: @Composable () -> Unit
-) {
+fun SocioTorcedorTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = EsquemaEscuro,
-        typography = Typography,
-        content = content
+        colorScheme = AppColorScheme,
+        typography  = Typography,
+        content     = content
     )
 }
