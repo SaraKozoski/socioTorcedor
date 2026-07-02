@@ -22,6 +22,7 @@ import com.wideias.sociotorcedor.ui.theme.FundoEscuro
 import com.wideias.sociotorcedor.ui.theme.VermelhoBotao
 import com.wideias.sociotorcedor.ui.theme.VermelhoFundoLogin
 import com.wideias.sociotorcedor.viewmodel.UserViewModel
+import androidx.navigation.NavController
 
 @Composable
 fun LoginScreen(
@@ -184,7 +185,7 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        TextButton(onClick = onCadastroClick) {
+        TextButton(onClick = { onCadastroClick() }) {
             Text("Não tem conta? Cadastre-se", color = Color.White, fontFamily = BebasNeue)
         }
     }

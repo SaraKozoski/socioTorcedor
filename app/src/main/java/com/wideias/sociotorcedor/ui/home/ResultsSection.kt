@@ -19,11 +19,16 @@ import androidx.compose.ui.unit.*
 import com.wideias.sociotorcedor.R
 import com.wideias.sociotorcedor.ui.theme.BebasNeue
 
+
 private val CardSecundarioFundo = Color(0xCC482B2B)
 private val CardPrincipalFundo = Color(0xFF2A0A0A)
 
+
 @Composable
-fun ResultsSection() {
+fun ResultsSection(
+    onApostarClick: () -> Unit,
+    onComprarClick: (Partida) -> Unit
+) {
     val partidaFutura = partidasMock.firstOrNull { it.futura }
     val partidaPrincipal = partidasMock.firstOrNull { it.aoVivo }
         ?: partidasMock.firstOrNull { !it.futura && !it.aoVivo }
@@ -49,7 +54,7 @@ fun ResultsSection() {
                 item { CardPartidaFutura(partida = partidaFutura) }
             }
             if (partidaPrincipal != null) {
-                item { CardPartidaPrincipal(partida = partidaPrincipal) }
+                item { CardPartidaPrincipal(partida = partidaPrincipal, onApostarClick = onApostarClick) }
             }
             items(partidasSecundarias) { partida ->
                 CardPartidaSecundaria(partida = partida)
@@ -131,7 +136,7 @@ fun CardPartidaFutura(partida: Partida) {
 }
 
 @Composable
-fun CardPartidaPrincipal(partida: Partida) {
+fun CardPartidaPrincipal(partida: Partida, onApostarClick: () -> Unit) {
     Box(
         modifier = Modifier
             .width(260.dp)
@@ -224,8 +229,7 @@ fun CardPartidaPrincipal(partida: Partida) {
             }
 
             Button(
-                onClick = { },
-                shape = RoundedCornerShape(50.dp),
+                onClick = onApostarClick,               shape = RoundedCornerShape(50.dp),
                 border = BorderStroke(2.dp, HomeColors.DetalhesCard1),
                 colors = ButtonDefaults.buttonColors(containerColor = HomeColors.Cards1),
                 contentPadding = PaddingValues(horizontal = 24.dp, vertical = 6.dp),

@@ -20,20 +20,30 @@ class UserViewModel : ViewModel() {
     private val _saldo = MutableStateFlow("R\$0,00")
     val saldo: StateFlow<String> = _saldo.asStateFlow()
 
-    val estaLogado: Boolean get() = _usuario.value != null
-    val temPlano: Boolean get() = _usuario.value?.plano?.isNotBlank() == true
+    private var _senhaSalva: String = ""
 
-    fun login(socio: SocioEntity) {
+    val estaLogado: Boolean get() = _usuario.value != null
+    val temPlano:   Boolean get() = _usuario.value?.plano?.isNotBlank() == true
+
+    fun login(socio: SocioEntity, senha: String) {
         _usuario.value = socio
+        _senhaSalva    = senha
     }
+
+    fun verificarSenha(senha: String): Boolean = senha == _senhaSalva
 
     fun logout() {
         _usuario.value = null
-        _pontos.value = 0
+        _senhaSalva    = ""
+        _pontos.value  = 0
     }
 
     fun adicionarPontos(reais: Double) {
         _pontos.value += reais.toInt()
+    }
+
+    fun resgatarPontos(quantidade: Int) {
+        _pontos.value = (_pontos.value - quantidade).coerceAtLeast(0)
     }
 
     fun adicionarSaldo(valor: Double) {
