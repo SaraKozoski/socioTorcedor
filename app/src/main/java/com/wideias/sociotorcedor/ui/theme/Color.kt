@@ -20,3 +20,4 @@ val VermelhoBotao      get() = ClubConfig.loginButton
 val FundoEscuro get() = ClubConfig.background
 val TextoPreto  = Color(0xFF000000)
 val White       = Color(0xFFFFFFFF)
+

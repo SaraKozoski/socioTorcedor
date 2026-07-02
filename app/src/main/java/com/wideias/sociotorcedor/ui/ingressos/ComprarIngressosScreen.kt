@@ -21,13 +21,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.wideias.sociotorcedor.ui.theme.BebasNeue
 import com.wideias.sociotorcedor.ui.theme.FundoEscuro
+import com.wideias.sociotorcedor.ui.theme.AppColors
 
-private val CardEscuro    = Color(0xFF1E1E1E)
-private val TextoSecund   = Color(0xFFAAAAAA)
-private val VermelhoBotao = Color(0xFFBA0000)
-private val AmareloFundo  = Color(0xFFFFC107)
-private val VerdeConfirm  = Color(0xFF4CAF50)
-private val BordaCard     = Color(0xFF2A2A2A)
+private val CardEscuro    get() = AppColors.cardDark2
+private val TextoSecund   get() = AppColors.textSecondary2
+private val VermelhoBotao get() = AppColors.brand
+private val AmareloFundo  get() = AppColors.warning
+private val VerdeConfirm  get() = AppColors.success
+private val BordaCard     get() = AppColors.cardBorder
 private val White = Color.White
 
 // ────────────────────────────────────────────────

@@ -18,11 +18,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Image
 import com.wideias.sociotorcedor.R
+import com.wideias.sociotorcedor.ui.theme.AppColors
 
-// ── Cores das zonas ───────────────────────────────────────
-private val CorRedZona    = Color(0xFFBA0000)
-private val CorGoldZona   = Color(0xFFFFD700)
-private val CorBlackZona  = Color(0xFF111111)
+private val CorRedZona    get() = AppColors.zonaRed
+private val CorGoldZona   get() = AppColors.zonaGold
+private val CorBlackZona  get() = AppColors.zonaBlack
 
 @Composable
 fun StadiumMap(

@@ -22,11 +22,12 @@ import com.wideias.sociotorcedor.R
 import com.wideias.sociotorcedor.data.remote.ApiJogador
 import com.wideias.sociotorcedor.ui.home.HomeColors
 import com.wideias.sociotorcedor.ui.theme.BebasNeue
+import com.wideias.sociotorcedor.ui.theme.AppColors
 
-private val FundoDetalhe   = Color(0xFF1C0D0D)
-private val DivisorCor     = Color(0xFF3D2020)
-private val BadgeFundo     = Color(0xFF3D2020)
-private val BadgeBorda     = Color(0xFF7C1010)
+private val FundoDetalhe   get() = AppColors.timeRowAltBg
+private val DivisorCor     get() = AppColors.timeDivider
+private val BadgeFundo     get() = AppColors.timeDivider
+private val BadgeBorda     get() = AppColors.timeHighlightRow
 
 @Composable
 fun JogadorDetalheScreen(

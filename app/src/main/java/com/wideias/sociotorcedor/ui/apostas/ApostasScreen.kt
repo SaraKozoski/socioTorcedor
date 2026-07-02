@@ -24,19 +24,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wideias.sociotorcedor.ui.theme.BebasNeue
 import com.wideias.sociotorcedor.ui.theme.FundoEscuro
+import com.wideias.sociotorcedor.ui.theme.AppColors
 
 private const val URL_APOSTAS = "https://www.parceiroapostas.com.br"
 
-// Paleta limpa e intencional
-private val Fundo         = Color(0xFF0D0D0D)
-private val SuperficieA   = Color(0xFF161616)
-private val SuperficieB   = Color(0xFF1F1F1F)
-private val Borda         = Color(0xFF2C2C2C)
-private val Dourado       = Color(0xFFFFBF00)
-private val DouradoClaro  = Color(0xFFFFF0A0)
-private val TextoPrimario = Color(0xFFF2F2F2)
-private val TextoSecund   = Color(0xFF888888)
-private val VerdeAcento   = Color(0xFF00C97A)
+private val Fundo         get() = AppColors.apostasFundo
+private val SuperficieA   get() = AppColors.apostasSurfaceA
+private val SuperficieB   get() = AppColors.apostasSurfaceB
+private val Borda         get() = AppColors.apostasBorder
+private val Dourado       get() = AppColors.apostasGold
+private val DouradoClaro  get() = AppColors.apostasGoldLight
+private val TextoPrimario get() = AppColors.apostasTextPrimary
+private val TextoSecund   get() = AppColors.apostasTextSecondary
+private val VerdeAcento   get() = AppColors.apostasGreen
 
 @Composable
 fun ApostasScreen(navController: androidx.navigation.NavController? = null) {
@@ -100,8 +100,8 @@ fun HeroBanner(onApostarClick: () -> Unit) {
             .fillMaxWidth()
             .background(
                 Brush.verticalGradient(
-                    colors = listOf(Color(0xFF1A0A00), Color(0xFF0D0D0D))
-                )
+                    colors = listOf(AppColors.apostasGradienteTopo, Fundo)
+                )   
             )
             .padding(horizontal = 20.dp, vertical = 36.dp)
     ) {

@@ -13,6 +13,7 @@ private val AppColorScheme = darkColorScheme(
     surface    = ClubConfig.background,
     onBackground = Color.White,
     onSurface    = Color.White
+    
 )
 
 @Composable
