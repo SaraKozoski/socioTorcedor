@@ -28,6 +28,7 @@ private val VermelhoBotao = Color(0xFFBA0000)
 private val AmareloFundo  = Color(0xFFFFC107)
 private val VerdeConfirm  = Color(0xFF4CAF50)
 private val BordaCard     = Color(0xFF2A2A2A)
+private val White = Color.White
 
 // ────────────────────────────────────────────────
 // Modelo de dados
@@ -195,13 +196,13 @@ fun SectionLabel(texto: String) {
             text          = texto,
             fontSize      = 12.sp,
             fontFamily    = BebasNeue,
-            color         = VermelhoBotao,
+            color         = White,
             letterSpacing = 2.sp
         )
         Spacer(Modifier.width(8.dp))
         HorizontalDivider(
             modifier  = Modifier.weight(1f),
-            color     = VermelhoBotao.copy(alpha = 0.2f),
+            color     = White.copy(alpha = 0.2f),
             thickness = 1.dp
         )
     }

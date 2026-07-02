@@ -38,7 +38,6 @@ import com.wideias.sociotorcedor.ui.ingressos.ComprarIngressosScreen
 sealed class Tela(val rota: String) {
     object Home         : Tela("home")
     object Lanchonete   : Tela("lanchonete")
-    object Credito      : Tela("credito")
     object Planos       : Tela("planos")
     object PlanoDetalhe : Tela("plano_detalhe/{tipoPlano}") {
         fun comTipo(tipo: String) = "plano_detalhe/$tipo"
@@ -52,11 +51,11 @@ sealed class Tela(val rota: String) {
 private val telasComNavegacao = listOf(
     Tela.Home.rota,
     Tela.Lanchonete.rota,
-    Tela.Credito.rota,
     Tela.Ingresso.rota,
     Tela.Planos.rota,
     Tela.Time.rota,
     Tela.Perfil.rota,
+    "credito",
     "meueespaco",
     "plano_detalhe",
     "carrinho",
@@ -136,7 +135,7 @@ fun NavegacaoInterna(
             )
         }
 
-        composable(Tela.Credito.rota) {
+        composable("credito") {
             CreditoScreen(navController = navController, userViewModel = userViewModel)
         }
 

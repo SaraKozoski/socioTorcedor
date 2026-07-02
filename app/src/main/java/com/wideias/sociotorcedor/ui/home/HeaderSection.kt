@@ -50,12 +50,8 @@ fun HeaderSection(
                     onClick = { menuAberto = false; navController.navigate("planos") }
                 )
                 DropdownMenuItem(
-                    text = { Text("Carrinho", fontFamily = BebasNeue, fontSize = 16.sp, color = Color.Gray) },
-                    onClick = { menuAberto = false; navController.navigate("carrinho") }
-                )
-                DropdownMenuItem(
-                    text = { Text("MEU ESPAÇO", fontFamily = BebasNeue, fontSize = 16.sp) },
-                    onClick = { menuAberto = false; navController.navigate("meueespaco") }
+                    text = { Text("Apostas", fontFamily = BebasNeue, fontSize = 16.sp) },
+                    onClick = { menuAberto = false; navController.navigate("apostas") }
                 )
             }
         }

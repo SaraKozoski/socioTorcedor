@@ -6,9 +6,10 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.OpenInBrowser
-import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,17 +25,18 @@ import androidx.compose.ui.unit.sp
 import com.wideias.sociotorcedor.ui.theme.BebasNeue
 import com.wideias.sociotorcedor.ui.theme.FundoEscuro
 
-// Substitua pela URL real do parceiro de apostas
 private const val URL_APOSTAS = "https://www.parceiroapostas.com.br"
 
-private val CardEscuro    = Color(0xFF1E1E1E)
-private val TextoSecund   = Color(0xFFAAAAAA)
-private val VermelhoBotao = Color(0xFFE53935)
-private val AmareloFundo  = Color(0xFFFFC107)
-private val VerdeConfirm  = Color(0xFF4CAF50)
-private val FundoBanner1  = Color(0xFF1A0000)
-private val FundoBanner2  = Color(0xFF4A0000)
-private val FundoBanner3  = Color(0xFF7A1010)
+// Paleta limpa e intencional
+private val Fundo         = Color(0xFF0D0D0D)
+private val SuperficieA   = Color(0xFF161616)
+private val SuperficieB   = Color(0xFF1F1F1F)
+private val Borda         = Color(0xFF2C2C2C)
+private val Dourado       = Color(0xFFFFBF00)
+private val DouradoClaro  = Color(0xFFFFF0A0)
+private val TextoPrimario = Color(0xFFF2F2F2)
+private val TextoSecund   = Color(0xFF888888)
+private val VerdeAcento   = Color(0xFF00C97A)
 
 @Composable
 fun ApostasScreen(navController: androidx.navigation.NavController? = null) {
@@ -43,259 +45,367 @@ fun ApostasScreen(navController: androidx.navigation.NavController? = null) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(FundoEscuro)
+            .background(Fundo)
+            .verticalScroll(rememberScrollState())
     ) {
-        // Header
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text       = "Parceiro Oficial do Clube",
-                fontSize   = 13.sp,
-                fontFamily = BebasNeue,
-                color      = TextoSecund
-            )
-        }
+        // ── Hero ──────────────────────────────────────────────────
+        HeroBanner(onApostarClick = {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(URL_APOSTAS)))
+        })
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 14.dp)
-                .padding(bottom = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Banner Principal
-            BannerAposta(onApostarClick = {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(URL_APOSTAS))
-                context.startActivity(intent)
+            // ── Como funciona ──────────────────────────────────────
+            Spacer(Modifier.height(4.dp))
+            SectionLabel("COMO APOSTAR")
+            PassosCard()
+
+            // ── Odds ───────────────────────────────────────────────
+            SectionLabel("ODDS AO VIVO")
+            OddsCard()
+
+            // ── Vantagens ─────────────────────────────────────────
+            SectionLabel("VANTAGENS DO SÓCIO")
+            VantagensCard()
+
+            // ── CTA secundário ────────────────────────────────────
+            CtaSecundario(onApostarClick = {
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(URL_APOSTAS)))
             })
 
+            // ── Aviso legal ───────────────────────────────────────
             Text(
-                text      = "* Jogue com responsabilidade. Proibido para menores de 18 anos.",
+                text = "Jogue com responsabilidade. Proibido para menores de 18 anos. Se o jogo deixar de ser divertido, busque ajuda.",
                 fontSize  = 10.sp,
-                color     = Color.White.copy(alpha = 0.3f),
-                fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+                color     = TextoSecund.copy(alpha = 0.5f),
                 textAlign = TextAlign.Center,
-                modifier  = Modifier.fillMaxWidth()
+                modifier  = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
             )
-
-            // Odds próximo jogo
-            CardOdds()
-
-            // Benefícios
-            CardBeneficios()
         }
     }
 }
 
+// ── Hero ──────────────────────────────────────────────────────────────────────
+
 @Composable
-fun BannerAposta(onApostarClick: () -> Unit) {
+fun HeroBanner(onApostarClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
             .background(
-                Brush.linearGradient(
-                    colors = listOf(FundoBanner1, FundoBanner2, FundoBanner3)
+                Brush.verticalGradient(
+                    colors = listOf(Color(0xFF1A0A00), Color(0xFF0D0D0D))
                 )
             )
+            .padding(horizontal = 20.dp, vertical = 36.dp)
     ) {
-        Column(modifier = Modifier.padding(22.dp)) {
-
-            // Badge parceiro
+        Column {
+            // Pílula de destaque
             Surface(
-                shape = RoundedCornerShape(50.dp),
-                color = AmareloFundo.copy(alpha = 0.15f),
-                modifier = Modifier
-                    .border(1.dp, AmareloFundo.copy(alpha = 0.4f), RoundedCornerShape(50.dp))
+                shape  = RoundedCornerShape(50),
+                color  = Dourado.copy(alpha = 0.15f),
+                modifier = Modifier.padding(bottom = 16.dp)
             ) {
                 Text(
-                    text     = "PARCEIRO OFICIAL",
-                    fontSize = 11.sp,
-                    fontFamily = BebasNeue,
-                    color    = AmareloFundo,
-                    letterSpacing = 1.5.sp,
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 3.dp)
+                    text     = "⚡  EXCLUSIVO PARA SÓCIOS",
+                    color    = Dourado,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.2.sp,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 5.dp)
                 )
             }
 
-            Spacer(Modifier.height(14.dp))
-
             Text(
-                text = "APOSTE",
-                fontSize   = 40.sp,
+                text       = "Aposte nos\njogos do seu\nclube",
                 fontFamily = BebasNeue,
-                color      = Color.White,
-                lineHeight = 36.sp,
-                letterSpacing = 2.sp
-            )
-            Text(
-                text = "AGORA",
-                fontSize   = 40.sp,
-                fontFamily = BebasNeue,
-                color      = AmareloFundo,
-                lineHeight = 36.sp,
-                letterSpacing = 2.sp
+                fontSize   = 48.sp,
+                lineHeight = 50.sp,
+                color      = TextoPrimario,
+                letterSpacing = 1.sp
             )
 
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(8.dp))
 
             Text(
-                text       = "As melhores odds para os jogos do seu clube. Bônus exclusivo para sócios-torcedores.",
-                fontSize   = 12.sp,
-                color      = Color.White.copy(alpha = 0.65f),
-                lineHeight = 18.sp
+                text      = "Odds melhores que as casas comuns, bônus de boas-vindas e saque rápido.",
+                fontSize  = 13.sp,
+                color     = TextoSecund,
+                lineHeight = 20.sp
             )
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(24.dp))
 
             Button(
                 onClick  = onApostarClick,
-                shape    = RoundedCornerShape(50.dp),
-                colors   = ButtonDefaults.buttonColors(containerColor = AmareloFundo),
-                modifier = Modifier.height(46.dp)
+                shape    = RoundedCornerShape(12.dp),
+                colors   = ButtonDefaults.buttonColors(containerColor = Dourado),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
             ) {
-                Icon(
-                    imageVector        = Icons.Default.OpenInBrowser,
-                    contentDescription = null,
-                    tint               = Color(0xFF1A0000),
-                    modifier           = Modifier.size(18.dp)
+                Text(
+                    text       = "CRIAR CONTA E APOSTAR",
+                    fontFamily = BebasNeue,
+                    fontSize   = 18.sp,
+                    letterSpacing = 1.sp,
+                    color      = Color(0xFF0D0D0D)
                 )
                 Spacer(Modifier.width(8.dp))
-                Text(
-                    text       = "APOSTE AQUI",
-                    fontFamily = BebasNeue,
-                    fontSize   = 16.sp,
-                    letterSpacing = 1.5.sp,
-                    color      = Color(0xFF1A0000)
+                Icon(
+                    imageVector        = Icons.Default.ArrowForward,
+                    contentDescription = null,
+                    tint               = Color(0xFF0D0D0D),
+                    modifier           = Modifier.size(18.dp)
                 )
             }
+
+            Spacer(Modifier.height(10.dp))
+
+            // Garantia rápida
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment     = Alignment.CenterVertically,
+                modifier              = Modifier.fillMaxWidth()
+            ) {
+                Icon(Icons.Default.Lock, contentDescription = null, tint = VerdeAcento, modifier = Modifier.size(13.dp))
+                Spacer(Modifier.width(5.dp))
+                Text("Site seguro e licenciado no Brasil", fontSize = 11.sp, color = TextoSecund)
+            }
+        }
+    }
+
+    // Divisor com gradiente
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(
+                Brush.horizontalGradient(
+                    listOf(Color.Transparent, Dourado.copy(alpha = 0.4f), Color.Transparent)
+                )
+            )
+    )
+}
+
+// ── Label de seção ────────────────────────────────────────────────────────────
+
+@Composable
+fun SectionLabel(texto: String) {
+    Text(
+        text          = texto,
+        fontSize      = 10.sp,
+        fontFamily    = BebasNeue,
+        color         = Dourado,
+        letterSpacing = 2.sp,
+        modifier      = Modifier.padding(top = 8.dp, bottom = 2.dp)
+    )
+}
+
+// ── Como funciona ─────────────────────────────────────────────────────────────
+
+@Composable
+fun PassosCard() {
+    Surface(
+        shape  = RoundedCornerShape(16.dp),
+        color  = SuperficieA,
+        border = BorderStroke(1.dp, Borda),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            PassoItem(numero = "1", titulo = "Crie sua conta", desc = "Clique em 'Criar conta' e preencha seus dados em menos de 2 minutos.")
+            HorizontalDivider(color = Borda, thickness = 0.5.dp)
+            PassoItem(numero = "2", titulo = "Faça seu primeiro depósito", desc = "A partir de R$ 20, via Pix instantâneo.")
+            HorizontalDivider(color = Borda, thickness = 0.5.dp)
+            PassoItem(numero = "3", titulo = "Escolha o jogo e aposte", desc = "Selecione o mercado, informe o valor e confirme.")
         }
     }
 }
 
 @Composable
-fun CardOdds() {
-    Card(
-        shape  = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = CardEscuro),
+fun PassoItem(numero: String, titulo: String, desc: String) {
+    Row(verticalAlignment = Alignment.Top) {
+        // Número destacado
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(32.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(Dourado.copy(alpha = 0.12f))
+        ) {
+            Text(
+                text       = numero,
+                fontFamily = BebasNeue,
+                fontSize   = 18.sp,
+                color      = Dourado
+            )
+        }
+        Spacer(Modifier.width(12.dp))
+        Column {
+            Text(titulo, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = TextoPrimario)
+            Spacer(Modifier.height(3.dp))
+            Text(desc,   fontSize = 12.sp, color = TextoSecund, lineHeight = 18.sp)
+        }
+    }
+}
+
+// ── Odds ──────────────────────────────────────────────────────────────────────
+
+@Composable
+fun OddsCard() {
+    Surface(
+        shape  = RoundedCornerShape(16.dp),
+        color  = SuperficieA,
+        border = BorderStroke(1.dp, Borda),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text       = "ODDS DO PRÓXIMO JOGO",
-                fontSize   = 13.sp,
-                fontFamily = BebasNeue,
-                color      = TextoSecund,
-                letterSpacing = 1.sp
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text       = "Atlético × Flamengo  ·  07/06",
-                fontSize   = 11.sp,
-                fontFamily = BebasNeue,
-                color      = TextoSecund
-            )
-            Spacer(Modifier.height(12.dp))
+        Column(modifier = Modifier.padding(18.dp)) {
+            Row(
+                modifier              = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment     = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text("Atlético × Flamengo", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = TextoPrimario)
+                    Text("Brasileirão · 07/06 · 21h", fontSize = 11.sp, color = TextoSecund)
+                }
+                Surface(
+                    shape = RoundedCornerShape(6.dp),
+                    color = VerdeAcento.copy(alpha = 0.15f)
+                ) {
+                    Text(
+                        "AO VIVO",
+                        fontSize = 9.sp,
+                        color    = VerdeAcento,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(16.dp))
+
             Row(
                 modifier              = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                OddItem(label = "Casa",   valor = "2.10", destaque = true,  modifier = Modifier.weight(1f))
-                OddItem(label = "Empate", valor = "3.40", destaque = false, modifier = Modifier.weight(1f))
-                OddItem(label = "Fora",   valor = "3.20", destaque = false, modifier = Modifier.weight(1f))
+                OddChip(label = "Atlético vence", valor = "2.10", destaque = true,  modifier = Modifier.weight(1f))
+                OddChip(label = "Empate",         valor = "3.40", destaque = false, modifier = Modifier.weight(1f))
+                OddChip(label = "Flamengo vence", valor = "3.20", destaque = false, modifier = Modifier.weight(1f))
             }
+
+            Spacer(Modifier.height(12.dp))
+
+            Text(
+                "Toque em uma odd para ir direto a esse mercado.",
+                fontSize = 10.sp,
+                color    = TextoSecund,
+                textAlign = TextAlign.Center,
+                modifier  = Modifier.fillMaxWidth()
+            )
         }
     }
 }
 
 @Composable
-fun OddItem(label: String, valor: String, destaque: Boolean, modifier: Modifier = Modifier) {
+fun OddChip(label: String, valor: String, destaque: Boolean, modifier: Modifier = Modifier) {
     Surface(
-        shape    = RoundedCornerShape(10.dp),
-        color    = Color(0xFF141414),
-        border   = BorderStroke(1.dp, Color(0xFF2A2A2A)),
+        shape  = RoundedCornerShape(12.dp),
+        color  = if (destaque) Dourado.copy(alpha = 0.1f) else SuperficieB,
+        border = BorderStroke(1.dp, if (destaque) Dourado.copy(alpha = 0.5f) else Borda),
         modifier = modifier
     ) {
         Column(
-            modifier            = Modifier.padding(10.dp),
+            modifier            = Modifier.padding(vertical = 12.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(label, fontSize = 10.sp, color = TextoSecund, fontFamily = BebasNeue)
-            Spacer(Modifier.height(4.dp))
             Text(
-                text       = valor,
-                fontSize   = 22.sp,
+                label,
+                fontSize  = 9.sp,
+                color     = TextoSecund,
+                textAlign = TextAlign.Center,
+                lineHeight = 13.sp
+            )
+            Spacer(Modifier.height(6.dp))
+            Text(
+                valor,
                 fontFamily = BebasNeue,
-                color      = if (destaque) AmareloFundo else Color.White
+                fontSize   = 26.sp,
+                color      = if (destaque) Dourado else TextoPrimario
             )
         }
     }
 }
 
+// ── Vantagens ─────────────────────────────────────────────────────────────────
+
 @Composable
-fun CardBeneficios() {
-    Card(
-        shape    = RoundedCornerShape(14.dp),
-        colors   = CardDefaults.cardColors(containerColor = CardEscuro),
+fun VantagensCard() {
+    Surface(
+        shape  = RoundedCornerShape(16.dp),
+        color  = SuperficieA,
+        border = BorderStroke(1.dp, Borda),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text       = "POR QUE APOSTAR AQUI?",
-                fontSize   = 13.sp,
-                fontFamily = BebasNeue,
-                color      = TextoSecund,
-                letterSpacing = 1.sp
+        Column(modifier = Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+            VantagemItem(
+                emoji  = "🎁",
+                titulo = "R$ 200 de bônus no primeiro depósito",
+                desc   = "Válido para novos usuários. Crédito liberado após a primeira aposta."
             )
-            Spacer(Modifier.height(14.dp))
-
-            BeneficioItem(
-                icon  = Icons.Default.Star,
-                cor   = AmareloFundo,
-                titulo = "Bônus de Boas-vindas",
-                desc  = "Até R$ 200 em créditos no primeiro depósito"
+            HorizontalDivider(color = Borda, thickness = 0.5.dp)
+            VantagemItem(
+                emoji  = "⚡",
+                titulo = "Saque via Pix em até 10 minutos",
+                desc   = "Sem burocracia, disponível 24 h por dia."
             )
-            Spacer(Modifier.height(12.dp))
-            BeneficioItem(
-                icon  = Icons.Default.Shield,
-                cor   = VerdeConfirm,
-                titulo = "Site Seguro e Licenciado",
-                desc  = "Operação regulamentada no Brasil"
-            )
-            Spacer(Modifier.height(12.dp))
-            BeneficioItem(
-                icon  = Icons.Default.Star,
-                cor   = VermelhoBotao,
-                titulo = "Odds Exclusivas para Sócios",
-                desc  = "Melhores cotas nos jogos do seu clube"
+            HorizontalDivider(color = Borda, thickness = 0.5.dp)
+            VantagemItem(
+                emoji  = "🏆",
+                titulo = "Odds exclusivas para sócios",
+                desc   = "Cotas até 15 % melhores nos jogos do seu clube."
             )
         }
     }
 }
 
 @Composable
-fun BeneficioItem(
-    icon  : androidx.compose.ui.graphics.vector.ImageVector,
-    cor   : Color,
-    titulo: String,
-    desc  : String
-) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            imageVector        = icon,
-            contentDescription = null,
-            tint               = cor,
-            modifier           = Modifier.size(20.dp)
-        )
-        Spacer(Modifier.width(10.dp))
+fun VantagemItem(emoji: String, titulo: String, desc: String) {
+    Row(verticalAlignment = Alignment.Top) {
+        Text(emoji, fontSize = 22.sp)
+        Spacer(Modifier.width(12.dp))
         Column {
-            Text(titulo, fontSize = 13.sp, color = Color.White, fontWeight = FontWeight.SemiBold)
-            Text(desc,   fontSize = 11.sp, color = TextoSecund)
+            Text(titulo, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = TextoPrimario)
+            Spacer(Modifier.height(3.dp))
+            Text(desc,   fontSize = 12.sp, color = TextoSecund, lineHeight = 18.sp)
         }
+    }
+}
+
+// ── CTA secundário ────────────────────────────────────────────────────────────
+
+@Composable
+fun CtaSecundario(onApostarClick: () -> Unit) {
+    OutlinedButton(
+        onClick  = onApostarClick,
+        shape    = RoundedCornerShape(12.dp),
+        border   = BorderStroke(1.dp, Dourado.copy(alpha = 0.6f)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+    ) {
+        Text(
+            text       = "VER TODOS OS MERCADOS",
+            fontFamily = BebasNeue,
+            fontSize   = 16.sp,
+            letterSpacing = 1.sp,
+            color      = Dourado
+        )
     }
 }
