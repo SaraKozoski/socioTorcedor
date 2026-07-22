@@ -16,7 +16,7 @@ object ClubConfig {
     //   primaryDark   → variação escura (fundo de cards de destaque, gradientes)
     //   primaryFaint  → variação translúcida (fundos sutis, chips inativos)
     val primaryMain  = Color(0xFFBA0000)   // vermelho vibrante
-    val primaryDark  = Color(0xFF8B0000)   // vermelho escuro / Dark Red
+    val primaryDark  = Color(0xFF8B0000)   // vermelho escuro / Dark Red 
     val primaryFaint = Color(0x80BA0000)   // vermelho 50% opaco
 
     val tierRed   = primaryFaint           // Plano RED  → cor primária translúcida
@@ -110,7 +110,7 @@ object AppColors {
     val tierRed       get() = ClubConfig.tierRed
     val tierGold      get() = ClubConfig.tierGold
     val tierBlack     get() = ClubConfig.tierBlack
-    
+
     // Apostas
     val apostasFundo         get() = ClubConfig.apostasFundo
     val apostasGradienteTopo get() = ClubConfig.apostasGradienteTopo
