@@ -64,7 +64,7 @@ fun ResultsSection(
 }
 
 @Composable
-fun CardPartidaFutura(partida: Partida) {
+fun CardPartidaFutura(partida: Partida, onComprarClick: (Partida) -> Unit) {
     Box(
         modifier = Modifier
             .width(130.dp)
@@ -114,7 +114,7 @@ fun CardPartidaFutura(partida: Partida) {
             }
 
             Button(
-                onClick = { },
+                onClick = { onComprarClick(partida) },
                 shape = RoundedCornerShape(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = HomeColors.FundoCard3),
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),

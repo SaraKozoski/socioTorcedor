@@ -140,7 +140,15 @@ fun NavegacaoInterna(
         }
 
         composable(Tela.Ingresso.rota) {
-            ComprarIngressosScreen(navController = navController)
+            ComprarIngressosScreen(navController = navController,JogoIdSelecionado = -1)
+        }
+
+        composable(route = Tela.Ingresso.rota + "/{jogoID}", arguments = listOf(navArgument("jogoID") { type = NavType.StringType, defaultValue = -1 })) { backStackEntry -> 
+                val jogoId = backStackEntry.arguments?.getString("jogoID") ?: "-1"
+                ComprarIngressosScreen(
+                    navController = navController, 
+                    jogoId = jogoId
+                )
         }
 
         composable(Tela.Planos.rota) {
@@ -161,6 +169,8 @@ fun NavegacaoInterna(
                 userViewModel = userViewModel
             )
         }
+        
+        
 
         composable(Tela.Lanchonete.rota) {
             ProdutosAlimentacaoScreen(navController, carrinhoViewModel, userViewModel)
