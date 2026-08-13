@@ -23,9 +23,10 @@ import coil.compose.AsyncImage
 import com.wideias.sociotorcedor.data.remote.ApiJogador
 import com.wideias.sociotorcedor.ui.home.HomeColors
 import com.wideias.sociotorcedor.ui.theme.BebasNeue
+import com.wideias.sociotorcedor.ui.theme.AppColors
 
-private val CardJogadorFundo = Color(0xFF2A1515)
-private val CardJogadorBorda = Color(0xFF5A2A2A)
+private val CardJogadorFundo get() = AppColors.timeTableBg
+private val CardJogadorBorda get() = AppColors.timeCardBorder
 
 private fun traduzirPosicao(posicao: String) = when (posicao.lowercase()) {
     "goalkeeper"  -> "GOLEIROS"
@@ -45,8 +46,7 @@ fun ElencoScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF1C0D0D))
-    ) {
+            .background(AppColors.timeRowAltBg)    ) {
         when (state) {
             is UiState.Carregando -> {
                 CircularProgressIndicator(

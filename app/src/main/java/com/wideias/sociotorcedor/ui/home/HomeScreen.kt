@@ -32,11 +32,17 @@ fun HomeScreen(navController: NavController, userViewModel: UserViewModel) {
             nomeUsuario = usuario?.nome ?: "N/A",
             saldoAtual = saldo,
             pontosAtual = pontos,
-            pontosMaximo = 250
+            pontosMaximo = 250,
+            onAdicionarCredito = {
+            navController.navigate("credito")
+        }
         )
 
         Spacer(modifier = Modifier.height(20.dp))
-        ResultsSection()
+        ResultsSection(
+            onApostarClick = { navController.navigate("apostas") },
+            onComprarClick = { partida -> navController.navigate("ingresso/${partida.id}") }
+        )
         Spacer(modifier = Modifier.height(20.dp))
 
         if (usuario != null) {

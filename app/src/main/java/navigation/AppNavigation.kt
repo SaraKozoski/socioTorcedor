@@ -12,6 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.wideias.sociotorcedor.ui.home.HeaderSection
 import com.wideias.sociotorcedor.ui.home.HomeScreen
 import com.wideias.sociotorcedor.ui.planos.PlanoDetalheScreen
@@ -27,31 +29,42 @@ import com.wideias.sociotorcedor.viewmodel.UserViewModel
 import com.wideias.sociotorcedor.ui.login.LoginScreen
 import com.wideias.sociotorcedor.ui.credito.CreditoScreen  
 import com.wideias.sociotorcedor.ui.pagamentos.PagamentoScreen
+import com.wideias.sociotorcedor.ui.perfil.ProfileScreen
+import com.wideias.sociotorcedor.ui.cadastro.CadastroScreen
+import com.wideias.sociotorcedor.ui.meueespaco.MeuEspacoScreen
+import com.wideias.sociotorcedor.ui.apostas.ApostasScreen
+import com.wideias.sociotorcedor.ui.ingressos.ComprarIngressosScreen
+
 
 
 sealed class Tela(val rota: String) {
     object Home         : Tela("home")
     object Lanchonete   : Tela("lanchonete")
-    object Credito      : Tela("credito")
-    object Ingresso     : Tela("ingresso")
     object Planos       : Tela("planos")
     object PlanoDetalhe : Tela("plano_detalhe/{tipoPlano}") {
         fun comTipo(tipo: String) = "plano_detalhe/$tipo"
     }
     object Time : Tela("time")
+    object Perfil : Tela("perfil")
+    object Ingresso : Tela("ingresso")
+
 }
 
 private val telasComNavegacao = listOf(
     Tela.Home.rota,
     Tela.Lanchonete.rota,
-    Tela.Credito.rota,
     Tela.Ingresso.rota,
     Tela.Planos.rota,
     Tela.Time.rota,
+    Tela.Perfil.rota,
+    "credito",
+    "meueespaco",
     "plano_detalhe",
     "carrinho",
     "login",
-    "pagamento_alimentacao"
+    "pagamento_alimentacao",
+    "cadastro",
+    "apostas"
 )
 
 @Composable
@@ -68,7 +81,7 @@ fun AppNavigation() {
 
     if (mostrarNavegacao) {
         Scaffold(
-            topBar = { HeaderSection(navController = navController) },
+            topBar = { HeaderSection(navController = navController,  userViewModel = userViewModel) },
             bottomBar = { BottomNavigationBar(navController = navController) }
         ) { innerPadding ->
             NavegacaoInterna(
@@ -111,25 +124,74 @@ fun NavegacaoInterna(
         composable("login") {
             LoginScreen(
                 onLoginSucesso = { navController.navigate(Tela.Home.rota) },
-                onCadastroClick = { /* navController.navigate("cadastro") */ },
+                onCadastroClick = {  navController.navigate("cadastro")  },
                 userViewModel = userViewModel
             )
         }
 
-        composable(Tela.Credito.rota) {
+        composable("cadastro") {
+            CadastroScreen(
+                onCadastroSucesso = { navController.navigate("home") },
+                onLoginClick      = { navController.popBackStack() },
+                userViewModel     = userViewModel
+            )
+        }
+
+        composable("credito") {
             CreditoScreen(navController = navController, userViewModel = userViewModel)
         }
 
         composable(Tela.Ingresso.rota) {
-            PlanosScreen(navController = navController)
+            ComprarIngressosScreen(navController = navController,jogoIdSelecionado = -1)
         }
 
-        composable(Tela.Planos.rota) {
-            PlanosScreen(navController = navController)
+        composable(
+            route = Tela.Ingresso.rota + "/{jogoId}",
+            arguments = listOf(navArgument("jogoId") {
+            type = NavType.IntType
+            defaultValue = -1
+            })
+        ) { backStackEntry ->
+               val jogoId = backStackEntry.arguments?.getInt("jogoId") ?: -1
+               ComprarIngressosScreen(
+                    navController = navController,
+                    jogoIdSelecionado = jogoId
+                )
         }
+
+
+        composable(Tela.Planos.rota) {
+            val temPlano = userViewModel.temPlano
+            if (temPlano) {
+                MeuEspacoScreen(
+                    navController = navController,
+                    userViewModel = userViewModel
+                )
+            } else {
+                PlanosScreen(navController = navController)
+            }
+        }
+ 
+        composable("meueespaco") {
+            MeuEspacoScreen(
+                navController = navController,
+                userViewModel = userViewModel
+            )
+        }
+        
+        
 
         composable(Tela.Lanchonete.rota) {
             ProdutosAlimentacaoScreen(navController, carrinhoViewModel, userViewModel)
+        }
+
+        composable(Tela.Perfil.rota) {
+            ProfileScreen(
+                navController = navController,
+                userViewModel = userViewModel,
+                onVoltarClick = { navController.popBackStack() },
+                onEsqueciSenhaClick = { /* TODO: navegar para tela de recuperação de senha */ }
+            )
         }
 
         composable("descricao_produto_alimentacao/{produtoId}") { backStackEntry ->
@@ -139,6 +201,10 @@ fun NavegacaoInterna(
                 navController = navController,
                 carrinhoViewModel = carrinhoViewModel
             )
+        }
+
+        composable("apostas") {
+            ApostasScreen( navController = navController)
         }
 
         composable("carrinho") {

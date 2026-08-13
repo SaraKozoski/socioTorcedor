@@ -22,12 +22,13 @@ import coil.compose.AsyncImage
 import com.wideias.sociotorcedor.data.remote.ApiClassificacao
 import com.wideias.sociotorcedor.ui.home.HomeColors
 import com.wideias.sociotorcedor.ui.theme.BebasNeue
+import com.wideias.sociotorcedor.ui.theme.AppColors
 
-private val FundoTabela    = Color(0xFF2A1515)
-private val FundoHeader    = Color(0xFF3D1E1E)
-private val FundoLinha     = Color(0xFF221010)
-private val FundoLinhaAlt  = Color(0xFF1C0D0D)
-private val DestaqueLinha  = Color(0xFF7C1010)
+private val FundoTabela    get() = AppColors.timeTableBg
+private val FundoHeader    get() = AppColors.timeHeaderBg
+private val FundoLinha     get() = AppColors.timeRowBg
+private val FundoLinhaAlt  get() = AppColors.timeRowAltBg
+private val DestaqueLinha  get() = AppColors.timeHighlightRow
 
 
 @Composable
@@ -41,8 +42,7 @@ fun ClassificacaoScreen(viewModel: TimeViewModel = viewModel()) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF1C0D0D))
-    ) {
+            .background(AppColors.timeRowAltBg)    ) {
         when (state) {
             is UiState.Carregando -> {
                 CircularProgressIndicator(

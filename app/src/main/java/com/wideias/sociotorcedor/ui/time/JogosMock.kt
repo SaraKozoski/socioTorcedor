@@ -1,6 +1,5 @@
 package com.wideias.sociotorcedor.ui.time
 
-// ── Modelo de jogo ────────────────────────────────────────
 data class Jogo(
     val competicao: String,
     val data: String,
@@ -12,7 +11,6 @@ data class Jogo(
     val futuro: Boolean = false
 )
 
-// ── Mock de jogos do Athletico ────────────────────────────
 val jogosMock = listOf(
 
     // Jogo ao vivo
