@@ -153,7 +153,7 @@ fun ComprarIngressosScreen(navController: NavController, jogoIdSelecionado: Int 
                 CartaoJogo(
                     jogo       = jogo,
                     destacado = jogo.id == jogoIdSelecionado,
-                    onComprar  = { /* navController.navigate("checkout/${jogo.id}") */ }
+                    onComprar  = { /* navController.navigate("checkout/${jogo.id}") */ },
                 )
                 Spacer(Modifier.height(12.dp))
             }
@@ -168,7 +168,7 @@ fun ComprarIngressosScreen(navController: NavController, jogoIdSelecionado: Int 
                     jogo           = jogo,
                     destacado      = jogo.id == jogoIdSelecionado,
                     onComprar      = {},
-                    onAvisar       = { /* lógica de notificação */ }
+                    onAvisar       = { /* lógica de notificação */ },
                 )
                 Spacer(Modifier.height(12.dp))
             }
@@ -204,7 +204,7 @@ fun SectionLabel(texto: String) {
 fun CartaoJogo(
     jogo     : JogoDisponivel,
     onComprar: () -> Unit,
-    onAvisar : (() -> Unit)? = null
+    onAvisar : (() -> Unit)? = null,
     destacado: Boolean = false
 ) {
     Card(

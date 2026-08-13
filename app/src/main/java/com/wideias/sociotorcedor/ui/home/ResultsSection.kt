@@ -51,7 +51,7 @@ fun ResultsSection(
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             if (partidaFutura != null) {
-                item { CardPartidaFutura(partida = partidaFutura) }
+                item { CardPartidaFutura(partida = partidaFutura, onComprarClick = onComprarClick) }
             }
             if (partidaPrincipal != null) {
                 item { CardPartidaPrincipal(partida = partidaPrincipal, onApostarClick = onApostarClick) }
