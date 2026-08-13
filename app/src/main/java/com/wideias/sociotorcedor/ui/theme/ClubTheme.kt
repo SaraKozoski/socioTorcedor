@@ -87,8 +87,7 @@ object AppColors {
     val background    get() = ClubConfig.background
     val cardDark      get() = ClubConfig.surfaceDark
     val cardLight     get() = ClubConfig.surfaceLight
-    val cardAccent    get() = ClubConfig.primaryDark   // ex: imageBox de produto
-
+    val cardAccent    get() = ClubConfig.primaryDark   
     // Marca / interação
     val brand         get() = ClubConfig.primaryMain
     val brandDark     get() = ClubConfig.primaryDark

@@ -29,7 +29,6 @@ fun StadiumMap(
     planoSelecionado: TipoPlano,
     onZonaSelecionada: (TipoPlano) -> Unit
 ) {
-    // Alpha de cada zona — zona selecionada brilha, outras somem
     val alphaRed by animateFloatAsState(
         targetValue = when (planoSelecionado) {
             TipoPlano.RED    -> 0.75f
@@ -61,7 +60,6 @@ fun StadiumMap(
             .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(12.dp))
     ) {
-        // ── Imagem real do estádio ────────────────────────
         Image(
             painter = painterResource(id = R.drawable.estadio_mapa),
             contentDescription = "Mapa do estádio",
@@ -69,18 +67,13 @@ fun StadiumMap(
             contentScale = ContentScale.FillWidth
         )
 
-        // ── Zonas sobrepostas clicáveis ───────────────────
-        // A imagem tem proporção ~0.85 (altura/largura)
-        // Usamos BoxWithConstraints para calcular tamanhos relativos
 
         BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
             val w = maxWidth
-            val h = w * 0.85f // proporção da imagem
+            val h = w * 0.85f 
 
             Box(modifier = Modifier.size(w, h)) {
 
-                // ── ZONA RED — cantos e faixas externas ──
-                // Canto superior esquerdo
                 ZonaClicavel(
                     modifier = Modifier
                         .offset(x = w * 0.0f, y = h * 0.08f)
@@ -91,7 +84,6 @@ fun StadiumMap(
                     shape = RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp),
                     onClick = { onZonaSelecionada(TipoPlano.RED) }
                 )
-                // Canto superior direito
                 ZonaClicavel(
                     modifier = Modifier
                         .offset(x = w * 0.86f, y = h * 0.08f)
@@ -102,7 +94,6 @@ fun StadiumMap(
                     shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp),
                     onClick = { onZonaSelecionada(TipoPlano.RED) }
                 )
-                // Faixa superior
                 ZonaClicavel(
                     modifier = Modifier
                         .offset(x = w * 0.14f, y = h * 0.04f)
@@ -113,7 +104,6 @@ fun StadiumMap(
                     shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
                     onClick = { onZonaSelecionada(TipoPlano.RED) }
                 )
-                // Faixa inferior
                 ZonaClicavel(
                     modifier = Modifier
                         .offset(x = w * 0.14f, y = h * 0.78f)
@@ -125,8 +115,6 @@ fun StadiumMap(
                     onClick = { onZonaSelecionada(TipoPlano.RED) }
                 )
 
-                // ── ZONA GOLD — laterais internas e topo interno ──
-                // Lateral esquerda interna
                 ZonaClicavel(
                     modifier = Modifier
                         .offset(x = w * 0.14f, y = h * 0.16f)
@@ -137,7 +125,6 @@ fun StadiumMap(
                     shape = RoundedCornerShape(4.dp),
                     onClick = { onZonaSelecionada(TipoPlano.GOLD) }
                 )
-                // Lateral direita interna
                 ZonaClicavel(
                     modifier = Modifier
                         .offset(x = w * 0.75f, y = h * 0.16f)
@@ -148,7 +135,6 @@ fun StadiumMap(
                     shape = RoundedCornerShape(4.dp),
                     onClick = { onZonaSelecionada(TipoPlano.GOLD) }
                 )
-                // Faixa superior interna (setor 115-119)
                 ZonaClicavel(
                     modifier = Modifier
                         .offset(x = w * 0.25f, y = h * 0.16f)
@@ -159,7 +145,6 @@ fun StadiumMap(
                     shape = RoundedCornerShape(4.dp),
                     onClick = { onZonaSelecionada(TipoPlano.GOLD) }
                 )
-                // Faixa inferior interna (setor 103-108)
                 ZonaClicavel(
                     modifier = Modifier
                         .offset(x = w * 0.25f, y = h * 0.65f)
@@ -171,7 +156,6 @@ fun StadiumMap(
                     onClick = { onZonaSelecionada(TipoPlano.GOLD) }
                 )
 
-                // ── ZONA BLACK — faixa VIP inferior ──────
                 ZonaClicavel(
                     modifier = Modifier
                         .offset(x = w * 0.14f, y = h * 0.70f)
@@ -187,7 +171,6 @@ fun StadiumMap(
     }
 }
 
-// ── Componente reutilizável de zona clicável ──────────────
 @Composable
 fun ZonaClicavel(
     modifier: Modifier,

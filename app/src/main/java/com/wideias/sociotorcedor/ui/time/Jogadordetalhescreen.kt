@@ -37,7 +37,6 @@ fun JogadorDetalheScreen(
 ) {
     val state by viewModel.elenco.collectAsState()
 
-    // Busca primeiro na API; se não achar, cai para o mock
     val jogador: ApiJogador? =
         (state as? UiState.Sucesso<List<ApiJogador>>)
             ?.dados?.firstOrNull { it.atleta_id == atletaId }
@@ -65,7 +64,6 @@ fun JogadorDetalheScreen(
             .background(FundoDetalhe)
             .verticalScroll(rememberScrollState())
     ) {
-        // ── Foto com gradiente ────────────────────────────
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -79,7 +77,6 @@ fun JogadorDetalheScreen(
                     contentScale = ContentScale.Crop
                 )
             } else {
-                // Placeholder com fundo e logo do clube quando não tem foto
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -95,7 +92,6 @@ fun JogadorDetalheScreen(
                 }
             }
 
-            // Gradiente sobre a foto
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -111,7 +107,6 @@ fun JogadorDetalheScreen(
                     )
             )
 
-            // Número e nome sobre o gradiente
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
@@ -133,7 +128,6 @@ fun JogadorDetalheScreen(
                     fontSize = 26.sp,
                     fontWeight = FontWeight.Bold
                 )
-                // Badge de posição
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(50.dp))
@@ -151,7 +145,6 @@ fun JogadorDetalheScreen(
             }
         }
 
-        // ── Dados do jogador ──────────────────────────────
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -159,7 +152,6 @@ fun JogadorDetalheScreen(
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Nascimento
             Row(modifier = Modifier.fillMaxWidth()) {
                 InfoItem(
                     titulo = "DATA DE NASCIMENTO",
@@ -177,7 +169,6 @@ fun JogadorDetalheScreen(
             HorizontalDivider(color = DivisorCor)
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Físico
             Row(modifier = Modifier.fillMaxWidth()) {
                 InfoItem(
                     titulo = "ALTURA",
@@ -196,7 +187,6 @@ fun JogadorDetalheScreen(
                 )
             }
 
-            // História
             if (!jogador.historia.isNullOrEmpty()) {
                 Spacer(modifier = Modifier.height(24.dp))
                 HorizontalDivider(color = DivisorCor)
