@@ -11,15 +11,15 @@ data class Ingresso(
     val setor: String,
     val assento: String,
     val confirmado: Boolean,
-    val qrCodeData: String  // string codificada no QR (ex: id do socio + id do jogo)
+    val qrCodeData: String  // string no QR (ex: id do socio + id do jogo)
 )
 
 data class Beneficio(
     val id: String,
     val titulo: String,
     val descricao: String,
-    val desconto: String,      // ex: "15% OFF"
-    val codigo: String,        // código a usar na loja
+    val desconto: String,      
+    val codigo: String,       
     val validade: String,
     val usado: Boolean = false
 )
