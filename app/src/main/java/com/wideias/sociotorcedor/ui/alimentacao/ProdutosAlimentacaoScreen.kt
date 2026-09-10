@@ -56,8 +56,6 @@ fun ProdutosAlimentacaoScreen(
         else produtosAlimentacaoMock.filter { it.categoria == categoriaSelecionada }
     }
 
-    // Mock de produtos disponíveis para resgate por pontos
-    // Substitua por sua fonte de dados real
     val produtosPontos = remember {
         produtosAlimentacaoMock.filter { it.pontos != null && it.pontos > 0 }
     }
@@ -66,7 +64,6 @@ fun ProdutosAlimentacaoScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
 
-                // ── Tabs ──────────────────────────────────────────────────
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -96,10 +93,8 @@ fun ProdutosAlimentacaoScreen(
                     )
                 }
 
-                // ── Conteúdo por tab ──────────────────────────────────────
                 when (tabSelecionada) {
                     0 -> {
-                        // Filtro de categorias
                         LazyRow(
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -215,9 +210,6 @@ private fun TabAlimentacao(
     }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Aba de resgate por pontos
-// ─────────────────────────────────────────────────────────────────────────────
 
 @Composable
 fun CardapioResgateScreen(
@@ -228,7 +220,6 @@ fun CardapioResgateScreen(
     val pontosUsuario by userViewModel.pontos.collectAsState()
     var resgateAtivo by remember { mutableStateOf<ResgateInfo?>(null) }
 
-    // Mostrar dialog de QR Code ao resgatar
     resgateAtivo?.let { info ->
         QrCodeResgateDialog(
             resgate = info,
@@ -236,7 +227,6 @@ fun CardapioResgateScreen(
         )
     }
 
-    // Lógica BetCard
     val pontosMaximo = 250
     val valores = listOf(0, 50, 100, 150, 200, 250)
     val indexAtual = valores.indexOfLast { it <= pontosUsuario }.coerceAtLeast(0)
@@ -245,7 +235,6 @@ fun CardapioResgateScreen(
 
     Column(modifier = Modifier.fillMaxSize()) {
 
-        // Saldo de pontos com barra de progresso estilo BetCard
         Card(
             modifier = Modifier
                 .fillMaxWidth()

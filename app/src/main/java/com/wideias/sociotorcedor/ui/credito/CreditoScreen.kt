@@ -18,7 +18,6 @@ import com.wideias.sociotorcedor.ui.theme.BebasNeue
 import com.wideias.sociotorcedor.viewmodel.UserViewModel
 import androidx.compose.runtime.collectAsState
 
-// Sem objeto CreditoColors — usa HomeColors diretamente (única fonte de verdade).
 
 @Composable
 fun CreditoScreen(
@@ -108,7 +107,6 @@ fun CreditoScreen(
     }
 }
 
-// ── Card de saldo ─────────────────────────────────────────────────────────────
 
 @Composable
 private fun SaldoCard(nome: String, saldo: String) {
@@ -161,7 +159,6 @@ private fun SaldoCard(nome: String, saldo: String) {
     }
 }
 
-// ── Seção de valor ────────────────────────────────────────────────────────────
 
 @Composable
 private fun ValorSection(

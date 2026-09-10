@@ -5,6 +5,7 @@ import com.wideias.sociotorcedor.ui.theme.AppColors
 import com.wideias.sociotorcedor.ui.theme.ClubConfig
 
 data class Partida(
+    val id            : Int = 0,
     val timeCasa      : String,
     val timeVisitante : String,
     val placarCasa    : Int    = 0,

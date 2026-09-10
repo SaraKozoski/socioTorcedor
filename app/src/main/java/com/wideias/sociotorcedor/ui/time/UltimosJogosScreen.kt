@@ -31,14 +31,14 @@ import com.wideias.sociotorcedor.R
 import com.wideias.sociotorcedor.data.remote.ApiPartida
 import com.wideias.sociotorcedor.ui.home.HomeColors
 import com.wideias.sociotorcedor.ui.theme.BebasNeue
+import com.wideias.sociotorcedor.ui.theme.AppColors
 
-private val ContainerFundo  = Color(0xFF1C0D0D)
-private val CardAoVivoFundo = Color(0xFF7C1010)
-private val CardAoVivoBorda = Color(0xFFA01414)
-private val CardSecundFundo = Color(0xFF3D2020)
-private val CardSecundBorda = Color(0xFF5A2A2A)
-private val BotaoFundo      = Color(0xFF9E1A1A)
-
+private val ContainerFundo  get() = AppColors.timeRowAltBg
+private val CardAoVivoFundo get() = AppColors.timeHighlightRow
+private val CardAoVivoBorda get() = AppColors.timeLiveBorder
+private val CardSecundFundo get() = AppColors.timeDivider
+private val CardSecundBorda get() = AppColors.timeCardBorder
+private val BotaoFundo      get() = AppColors.timeButtonBg
 private const val TIME_CASA_ID = 134
 
 @Composable

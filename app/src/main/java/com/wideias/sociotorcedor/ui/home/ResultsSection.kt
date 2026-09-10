@@ -18,10 +18,10 @@ import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import com.wideias.sociotorcedor.R
 import com.wideias.sociotorcedor.ui.theme.BebasNeue
+import com.wideias.sociotorcedor.ui.theme.AppColors
 
-
-private val CardSecundarioFundo = Color(0xCC482B2B)
-private val CardPrincipalFundo = Color(0xFF2A0A0A)
+private val CardSecundarioFundo get() = AppColors.homeCardSecundario
+private val CardPrincipalFundo  get() = AppColors.homeCardPrincipal
 
 
 @Composable
@@ -51,7 +51,7 @@ fun ResultsSection(
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             if (partidaFutura != null) {
-                item { CardPartidaFutura(partida = partidaFutura) }
+                item { CardPartidaFutura(partida = partidaFutura, onComprarClick = onComprarClick) }
             }
             if (partidaPrincipal != null) {
                 item { CardPartidaPrincipal(partida = partidaPrincipal, onApostarClick = onApostarClick) }
@@ -64,7 +64,7 @@ fun ResultsSection(
 }
 
 @Composable
-fun CardPartidaFutura(partida: Partida) {
+fun CardPartidaFutura(partida: Partida, onComprarClick: (Partida) -> Unit) {
     Box(
         modifier = Modifier
             .width(130.dp)
@@ -114,7 +114,7 @@ fun CardPartidaFutura(partida: Partida) {
             }
 
             Button(
-                onClick = { },
+                onClick = { onComprarClick(partida) },
                 shape = RoundedCornerShape(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = HomeColors.FundoCard3),
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),

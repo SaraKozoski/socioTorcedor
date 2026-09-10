@@ -39,11 +39,12 @@ import com.wideias.sociotorcedor.ui.theme.FundoEscuro
 import com.wideias.sociotorcedor.ui.theme.VermelhoBotao
 import com.wideias.sociotorcedor.ui.theme.VermelhoFundoLogin
 import com.wideias.sociotorcedor.viewmodel.UserViewModel
+import com.wideias.sociotorcedor.ui.theme.AppColors
 
-private val CardEscuro   = Color(0xFF1E1E1E)
-private val TextoSecund  = Color(0xFFAAAAAA)
-private val VerdeConfirm = Color(0xFF4CAF50)
-private val AmareloFundo = Color(0xFFFFC107)
+private val CardEscuro   get() = AppColors.cardDark2
+private val TextoSecund  get() = AppColors.textSecondary2
+private val VerdeConfirm get() = AppColors.success
+private val AmareloFundo get() = AppColors.warning
 
 fun gerarQrCodeBitmap(conteudo: String, tamanho: Int = 512): Bitmap {
     val bitMatrix: BitMatrix = MultiFormatWriter().encode(

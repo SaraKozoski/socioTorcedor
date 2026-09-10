@@ -12,6 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.wideias.sociotorcedor.ui.home.HeaderSection
 import com.wideias.sociotorcedor.ui.home.HomeScreen
 import com.wideias.sociotorcedor.ui.planos.PlanoDetalheScreen
@@ -140,8 +142,23 @@ fun NavegacaoInterna(
         }
 
         composable(Tela.Ingresso.rota) {
-            ComprarIngressosScreen(navController = navController)
+            ComprarIngressosScreen(navController = navController,jogoIdSelecionado = -1)
         }
+
+        composable(
+            route = Tela.Ingresso.rota + "/{jogoId}",
+            arguments = listOf(navArgument("jogoId") {
+            type = NavType.IntType
+            defaultValue = -1
+            })
+        ) { backStackEntry ->
+               val jogoId = backStackEntry.arguments?.getInt("jogoId") ?: -1
+               ComprarIngressosScreen(
+                    navController = navController,
+                    jogoIdSelecionado = jogoId
+                )
+        }
+
 
         composable(Tela.Planos.rota) {
             val temPlano = userViewModel.temPlano
@@ -161,6 +178,8 @@ fun NavegacaoInterna(
                 userViewModel = userViewModel
             )
         }
+        
+        
 
         composable(Tela.Lanchonete.rota) {
             ProdutosAlimentacaoScreen(navController, carrinhoViewModel, userViewModel)

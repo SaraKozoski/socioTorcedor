@@ -21,18 +21,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.wideias.sociotorcedor.ui.theme.BebasNeue
 import com.wideias.sociotorcedor.ui.theme.FundoEscuro
+import com.wideias.sociotorcedor.ui.theme.AppColors
 
-private val CardEscuro    = Color(0xFF1E1E1E)
-private val TextoSecund   = Color(0xFFAAAAAA)
-private val VermelhoBotao = Color(0xFFBA0000)
-private val AmareloFundo  = Color(0xFFFFC107)
-private val VerdeConfirm  = Color(0xFF4CAF50)
-private val BordaCard     = Color(0xFF2A2A2A)
+private val CardEscuro    get() = AppColors.cardDark2
+private val TextoSecund   get() = AppColors.textSecondary2
+private val VermelhoBotao get() = AppColors.brand
+private val AmareloFundo  get() = AppColors.warning
+private val VerdeConfirm  get() = AppColors.success
+private val BordaCard     get() = AppColors.cardBorder
 private val White = Color.White
 
-// ────────────────────────────────────────────────
-// Modelo de dados
-// ────────────────────────────────────────────────
 
 enum class StatusIngresso { DISPONIVEL, ESGOTADO, EM_BREVE }
 
@@ -116,21 +114,18 @@ private val jogosMock = listOf(
     )
 )
 
-// ────────────────────────────────────────────────
-// Tela principal
-// ────────────────────────────────────────────────
 
 @Composable
-fun ComprarIngressosScreen(navController: NavController) {
+fun ComprarIngressosScreen(navController: NavController, jogoIdSelecionado: Int = -1) {
     val jogosDisponiveis = remember { jogosMock.filter { it.status != StatusIngresso.EM_BREVE } }
     val jogosEmBreve     = remember { jogosMock.filter { it.status == StatusIngresso.EM_BREVE } }
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(FundoEscuro)
     ) {
-        // Header
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -152,13 +147,13 @@ fun ComprarIngressosScreen(navController: NavController) {
                 .padding(horizontal = 14.dp)
                 .padding(bottom = 24.dp)
         ) {
-            // Seção: Vendas Abertas
             SectionLabel(texto = "VENDAS ABERTAS")
 
             jogosDisponiveis.forEach { jogo ->
                 CartaoJogo(
                     jogo       = jogo,
-                    onComprar  = { /* navController.navigate("checkout/${jogo.id}") */ }
+                    destacado = jogo.id == jogoIdSelecionado,
+                    onComprar  = { /* navController.navigate("checkout/${jogo.id}") */ },
                 )
                 Spacer(Modifier.height(12.dp))
             }
@@ -171,18 +166,15 @@ fun ComprarIngressosScreen(navController: NavController) {
             jogosEmBreve.forEach { jogo ->
                 CartaoJogo(
                     jogo           = jogo,
+                    destacado      = jogo.id == jogoIdSelecionado,
                     onComprar      = {},
-                    onAvisar       = { /* lógica de notificação */ }
+                    onAvisar       = { /* lógica de notificação */ },
                 )
                 Spacer(Modifier.height(12.dp))
             }
         }
     }
 }
-
-// ────────────────────────────────────────────────
-// Componentes
-// ────────────────────────────────────────────────
 
 @Composable
 fun SectionLabel(texto: String) {
@@ -212,16 +204,16 @@ fun SectionLabel(texto: String) {
 fun CartaoJogo(
     jogo     : JogoDisponivel,
     onComprar: () -> Unit,
-    onAvisar : (() -> Unit)? = null
+    onAvisar : (() -> Unit)? = null,
+    destacado: Boolean = false
 ) {
     Card(
         shape    = RoundedCornerShape(16.dp),
         colors   = CardDefaults.cardColors(containerColor = CardEscuro),
-        border   = BorderStroke(1.dp, BordaCard),
+        border   = BorderStroke(if (destacado) 2.dp else 1.dp, if (destacado) VermelhoBotao else BordaCard),
         modifier = Modifier.fillMaxWidth()
     ) {
         Column {
-            // Cabeçalho: competição + badge status
             Row(
                 modifier              = Modifier
                     .fillMaxWidth()
